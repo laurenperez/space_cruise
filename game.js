@@ -7,130 +7,126 @@ window.onload = function(){
   startGame();
 };
 
+
 var startGame = function() {
   //ADD EVENT LISTENER TO CANVAS, GIVE CANVAS FOCUS, 
   canvas.addEventListener('keydown', movePlayer, true);
   canvas.focus();
   player();
-  staticObstacles();
   };
 
+
 //PLAYER START POSITION
-var x = 20;
-var y = 150;
+var x = (20 - 20);
+var y = (150 - 20);
+
 
 //CREATE THE PLAYER
 var player = function() {
-  ctx.beginPath();
-  ctx.arc( x, y, 10, 0, Math.PI * 2, false);
-  ctx.strokeStyle = '#fa34a3';
-  ctx.stroke();
-  staticObstacles();
+  var ship = document.getElementById('ship');
+  ctx.drawImage(ship, x, y, 40, 40);
 };
+
 
 //MOVE THE PLAYER AROUND THE CANVAS
  var movePlayer = function (event) {
   
   if (event.keyCode === 38) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    staticObstacles();
-    y = y - 10;
-    ctx.beginPath();
-    ctx.arc( x, y, 10, 0, Math.PI * 2, false);
-    ctx.strokeStyle = '#fa34a3';
-    ctx.stroke();
+    y = y - 20;
   }
   if (event.keyCode === 40) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    staticObstacles();
-    y = y + 10;
-    ctx.beginPath();
-    ctx.arc( x, y, 10, 0, Math.PI * 2, false);
-    ctx.strokeStyle = '#fa34a3';
-    ctx.stroke();
+    y = y + 20;
   }
   if (event.keyCode === 37) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    staticObstacles();
-    x = x - 10;
-    ctx.beginPath();
-    ctx.arc( x, y, 10, 0, Math.PI * 2, false);
-    ctx.strokeStyle = '#fa34a3';
-    ctx.stroke();
+    x = x - 20;
   }
   if (event.keyCode === 39) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    staticObstacles();
-    x = x + 10;
-    ctx.beginPath();
-    ctx.arc( x, y, 10, 0, Math.PI * 2, false);
-    ctx.strokeStyle = '#fa34a3';
-    ctx.stroke();
+    x = x + 20;
   } 
 };
 
-//CREATE SOME STATIC OBSTACLES
+
+//CREATES STATIC OBSTACLES
 var staticObstacles = function() {
-  var a = 100;
-  var b = 200;
-  ctx.fillStyle = 'yellow';
-  ctx.fillRect(a, b, 20, 20);
+  var a = 200;
+  var b = 175;
+  var asteroid1 = document.getElementById('rock1');
+  ctx.drawImage(asteroid1, a, b, 30, 30);
 
   var c = 350;
-  var d = 75;
-  ctx.fillStyle = 'yellow';
-  ctx.fillRect(c, d, 30, 30);
+  var d = 100;
+  var asteroid2 = document.getElementById('rock2');
+  ctx.drawImage(asteroid2, c, d, 40, 40);
 };
 
 
-//CREATE SOME MOVING OBSTICLES
-var ax = 450
-var ay = 250;
-var bx = 450;
-var by = 150;
-var cx = 450;
-var cy = 100;
+
+var levels = [{
+  ax: 450,
+  ay: 50,
+  bx: 450,
+  by: 250,
+  cx: 450,
+  cy: 150,
+  ex: 450, 
+  ey: 250
+}]; 
 
 
+
+//CREATES MOVING OBSTICLES
+var currentLevel = levels[0];
+
+var levelOneMovingObstacles = function() {
+  if (currentLevel.ax > 0 && currentLevel.ax < canvas.Width) {
+    var asteroid1 = document.getElementById('rock1');
+    ctx.drawImage(asteroid1, currentLevel.ax, currentLevel.ay, 30, 30);
+    currentLevel.ax -= 1;
+  } 
+  if (currentLevel.bx > 5 && currentLevel.by > 5) {
+    var asteroid2 = document.getElementById('rock2');
+    ctx.drawImage(asteroid2, currentLevel.bx, currentLevel.by, 30, 30);
+    currentLevel.bx -= 1;
+    currentLevel.by -= .5; 
+  }
+  if (currentLevel.cx > 5 && currentLevel.cy < 295) {
+    var asteroid3 = document.getElementById('rock3');
+    ctx.drawImage(asteroid3, currentLevel.cx, currentLevel.cy, 35, 35);
+    currentLevel.cx -= .5;
+    currentLevel.cy += .15; 
+  }
+  if (currentLevel.ex > 5) {
+    var asteroid4 = document.getElementById('rock4');
+    ctx.drawImage(asteroid4, currentLevel.ex, currentLevel.ey, 20, 20);
+    currentLevel.ex -= 1;
+  } 
+};
+
+
+
+
+//ANIMATES THE WHOLE GAME
 function animateGame() {
   requestAnimationFrame(animateGame);
   ctx.clearRect(0, 0, canvas.Width, canvas.Height);
+  
   player();
+  staticObstacles();
+  levelOneMovingObstacles();
 
+  //CREATES THE MOVING STARS EFFECT
   var starsX = Math.random() * canvas.Width;
   var starsY = Math.random() * canvas.Height;
   ctx.fillStyle = 'White';
-  ctx.fillRect(starsX, starsY, 2, 2);
+  ctx.fillRect(starsX, starsY, 2.5, 2.5);
   
+};
 
-  if (ax > 5) {
-    ctx.fillStyle = 'yellow';
-    ctx.fillRect(ax, ay, 20, 20);
-    ax -= 1;
-  }
-  if (bx > 5 && by > 5) {
-    ctx.fillStyle = 'yellow';
-    ctx.fillRect(bx, by, 20, 20);
-    bx -= .5;
-    by -= .15; 
-  }
-  if (cx > 5 && cy < 295) {
-    ctx.fillStyle = 'yellow';
-    ctx.fillRect(cx, cy, 20, 20);
-    cx -= 1;
-    cy += .15; 
-  }
-
-  
-  
-
-
-// other future obsticles
-
-}
-
-//animateGame();
-
+animateGame();
 
 
 
