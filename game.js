@@ -1,6 +1,5 @@
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
-
 canvas.Width = 500;
 canvas.Height = 300;
 
@@ -13,7 +12,7 @@ var startGame = function() {
   canvas.addEventListener('keydown', movePlayer, true);
   canvas.focus();
   player();
-  obsticle();
+  staticObstacles();
   };
 
 var x = 20;
@@ -26,16 +25,21 @@ var player = function() {
   ctx.arc( x, y, 10, 0, Math.PI * 2, false);
   ctx.strokeStyle = '#fa34a3';
   ctx.stroke();
-  obsticle();
+  staticObstacles();
 };
 
 
-//CREATE A STATIC OBSTICLE
-var obsticle = function() {
-  var bx = 100;
-  var by = 200;
-  ctx.fillStyle = 'blue';
-  ctx.fillRect(bx, by, 20, 20);
+//CREATE SOME STATIC OBSTACLES
+var staticObstacles = function() {
+  var a = 100;
+  var b = 200;
+  ctx.fillStyle = 'yellow';
+  ctx.fillRect(a, b, 20, 20);
+
+  var c = 350;
+  var d = 100;
+  ctx.fillStyle = 'yellow';
+  ctx.fillRect(c, d, 40, 40);
 };
 
 //MOVE THE PLAYER AROUND THE CANVAS
@@ -43,8 +47,8 @@ var obsticle = function() {
   
   if (event.keyCode === 38) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    obsticle();
-    y = y - 15;
+    staticObstacles();
+    y = y - 10;
     ctx.beginPath();
     ctx.arc( x, y, 10, 0, Math.PI * 2, false);
     ctx.strokeStyle = '#fa34a3';
@@ -52,8 +56,8 @@ var obsticle = function() {
   }
   if (event.keyCode === 40) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    obsticle();
-    y = y + 15;
+    staticObstacles();
+    y = y + 10;
     ctx.beginPath();
     ctx.arc( x, y, 10, 0, Math.PI * 2, false);
     ctx.strokeStyle = '#fa34a3';
@@ -61,8 +65,8 @@ var obsticle = function() {
   }
   if (event.keyCode === 37) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    obsticle();
-    x = x - 15;
+    staticObstacles();
+    x = x - 10;
     ctx.beginPath();
     ctx.arc( x, y, 10, 0, Math.PI * 2, false);
     ctx.strokeStyle = '#fa34a3';
@@ -70,8 +74,8 @@ var obsticle = function() {
   }
   if (event.keyCode === 39) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    obsticle();
-    x = x + 15;
+    staticObstacles();
+    x = x + 10;
     ctx.beginPath();
     ctx.arc( x, y, 10, 0, Math.PI * 2, false);
     ctx.strokeStyle = '#fa34a3';
@@ -79,30 +83,56 @@ var obsticle = function() {
   } 
 };
 
+
+
+
+
 //MAKE A MOVING OBSTICLE
-var ax = 100;
-var ay = 100;
-var dx = 1;
-var dy = 1;
-var radius = 10;
-function animate() {
-    requestAnimationFrame(animate);
-    ctx.clearRect(0, 0, canvas.Width, canvas.Height);
-    player();
-    ctx.beginPath();
-    ctx.arc( ax, ay, radius, 0, Math.PI * 2, false);
-    ctx.strokeStyle = '#fa34a3';
-    ctx.stroke();
-    if (ax + radius > canvas.Width || ax - radius < 0) {
-        dx = -dx;
-    }
-    if ( ay + radius > canvas.Height || ay - radius < 0) {
-        dy = -dy
-    }
-    ax += dx;
-    ay += dy;
+var ax = 450
+var ay = 250;
+var bx = 450;
+var by = 150;
+var cx = 450;
+var cy = 100;
+
+
+function animateGame() {
+  requestAnimationFrame(animateGame);
+  ctx.clearRect(0, 0, canvas.Width, canvas.Height);
+  player();
+
+  var starsX = Math.random() * canvas.Width;
+  var starsY = Math.random() * canvas.Height;
+  ctx.fillStyle = 'White';
+  ctx.fillRect(starsX, starsY, 2, 2);
+  
+
+  if (ax > 5) {
+    ctx.fillStyle = 'yellow';
+    ctx.fillRect(ax, ay, 20, 20);
+    ax -= 1;
+  }
+  if (bx > 5 && by > 5) {
+    ctx.fillStyle = 'yellow';
+    ctx.fillRect(bx, by, 20, 20);
+    bx -= .5;
+    by -= .15; 
+  }
+  if (cx > 5 && cy < 295) {
+    ctx.fillStyle = 'yellow';
+    ctx.fillRect(cx, cy, 20, 20);
+    cx -= 1;
+    cy += .15; 
+  }
+  
+  
+
+
+// other future obsticles
+
 }
-animate();
+
+animateGame();
 
 
 
