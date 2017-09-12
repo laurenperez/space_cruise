@@ -15,9 +15,9 @@ var startGame = function() {
   staticObstacles();
   };
 
+//PLAYER START POSITION
 var x = 20;
 var y = 150;
-
 
 //CREATE THE PLAYER
 var player = function() {
@@ -26,20 +26,6 @@ var player = function() {
   ctx.strokeStyle = '#fa34a3';
   ctx.stroke();
   staticObstacles();
-};
-
-
-//CREATE SOME STATIC OBSTACLES
-var staticObstacles = function() {
-  var a = 100;
-  var b = 200;
-  ctx.fillStyle = 'yellow';
-  ctx.fillRect(a, b, 20, 20);
-
-  var c = 350;
-  var d = 100;
-  ctx.fillStyle = 'yellow';
-  ctx.fillRect(c, d, 40, 40);
 };
 
 //MOVE THE PLAYER AROUND THE CANVAS
@@ -83,11 +69,21 @@ var staticObstacles = function() {
   } 
 };
 
+//CREATE SOME STATIC OBSTACLES
+var staticObstacles = function() {
+  var a = 100;
+  var b = 200;
+  ctx.fillStyle = 'yellow';
+  ctx.fillRect(a, b, 20, 20);
+
+  var c = 350;
+  var d = 75;
+  ctx.fillStyle = 'yellow';
+  ctx.fillRect(c, d, 30, 30);
+};
 
 
-
-
-//MAKE A MOVING OBSTICLE
+//CREATE SOME MOVING OBSTICLES
 var ax = 450
 var ay = 250;
 var bx = 450;
@@ -124,6 +120,7 @@ function animateGame() {
     cx -= 1;
     cy += .15; 
   }
+
   
   
 
@@ -132,7 +129,7 @@ function animateGame() {
 
 }
 
-animateGame();
+//animateGame();
 
 
 
