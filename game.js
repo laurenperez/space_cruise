@@ -9,7 +9,7 @@ window.onload = function(){
 
 
 var startGame = function() {
-  //ADD EVENT LISTENER TO CANVAS, GIVE CANVAS FOCUS, 
+  //ADD EVENT LISTENER TO CANVAS, GIVE CANVAS FOCUS, ADD PLAYER TO BOARD
   canvas.addEventListener('keydown', movePlayer, true);
   canvas.focus();
   player();
@@ -50,6 +50,18 @@ var player = function() {
 };
 
 
+var levels = [{
+  ax: 450, 
+  ay: 50,
+  bx: 450,
+  by: 250,
+  cx: 450,
+  cy: 150,
+  ex: 450, 
+  ey: 250
+}]; 
+
+
 //CREATES STATIC OBSTACLES
 var staticObstacles = function() {
   var a = 200;
@@ -62,20 +74,6 @@ var staticObstacles = function() {
   var asteroid2 = document.getElementById('rock2');
   ctx.drawImage(asteroid2, c, d, 40, 40);
 };
-
-
-
-var levels = [{
-  ax: 450,
-  ay: 50,
-  bx: 450,
-  by: 250,
-  cx: 450,
-  cy: 150,
-  ex: 450, 
-  ey: 250
-}]; 
-
 
 
 //CREATES MOVING OBSTICLES
@@ -108,6 +106,17 @@ var levelOneMovingObstacles = function() {
 
 
 
+//CHECK FOR A COLLISION
+var checkForCollision = function(x1, y1, x2, y2) {
+  var xDistance = x2 - x1;
+  var yDistance = y2 - y1;
+  var dngrZone = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+  if (dngrZone < 25) {
+    console.log ('crash!');
+  }
+  return dngrZone;
+};
+
 
 //ANIMATES THE WHOLE GAME
 function animateGame() {
@@ -117,6 +126,10 @@ function animateGame() {
   player();
   staticObstacles();
   levelOneMovingObstacles();
+  checkForCollision(x, y, currentLevel.ex, currentLevel.ey);
+  checkForCollision(x, y, currentLevel.cx, currentLevel.cy);
+  checkForCollision(x, y, currentLevel.bx, currentLevel.by);
+  checkForCollision(x, y, currentLevel.ax, currentLevel.ay);
 
   //CREATES THE MOVING STARS EFFECT
   var starsX = Math.random() * canvas.Width;
@@ -126,7 +139,7 @@ function animateGame() {
   
 };
 
-animateGame();
+//animateGame();
 
 
 
