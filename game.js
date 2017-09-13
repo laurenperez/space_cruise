@@ -78,86 +78,59 @@ var staticObstacles = function() {
 };
 
 //OBSTACLE GENERATION SETTINGS PER LEVEL
-var levels = [
-  {
-  ax: 790, ay:  25, adx:.75, ady:.25,
-  bx: 790, by:  75, bdx: .5, bdy:  0,
-  cx: 790, cy: 125, cdx:  2, cdy:.25,
-  ex: 790, ey: 200, edx:  1, edy:  0,
-  fx: 790, fy: 250, fdx:.75, fdy:.15,
-  gx: 790, gy: 300, gdx: .5, gdy:.05,
-  hx: 790, hy: 350, hdx:.75, hdy: .5,
-  jx: 790, jy: 400, jdx:  1, jdy:  0,
-  kx: 790, ky: 450, kdx:  1, kdy:.15,
-  lx: 790, ly: 400, ldx:  1, ldy: .5,
-  }
+
+var levelOne = [
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy: .12, width: 30, height: 30},
+  {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx: -.25, dy:   0, width: 20, height: 20},
+  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:   -1, dy: .12, width: 35, height: 35},
+  {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx:  -.5, dy:   0, width: 20, height: 20},
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.25, dy: .07, width: 30, height: 30},
+  {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 20, height: 20},
+  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx: -.35, dy:-.07, width: 35, height: 35},
+  {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx:  -.5, dy:  -0, width: 40, height: 40},
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx:   -1, dy:-.07, width: 15, height: 15},
+  {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 30, height: 30},
 ]; 
 
+var levelTwo = [
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy: .12, width: 30, height: 30},
+  {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx: -.25, dy:   0, width: 20, height: 20},
+  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:   -1, dy: .12, width: 35, height: 35},
+  {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx:  -.5, dy:   0, width: 20, height: 20},
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy:   0, width: 30, height: 30},
+  {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx: -.25, dy:   0, width: 20, height: 20},
+  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:   -1, dy:   0, width: 35, height: 35},
+  {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx:  -.5, dy:   0, width: 20, height: 20},
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.25, dy: .07, width: 30, height: 30},
+  {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 20, height: 20},
+  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx: -.35, dy:-.07, width: 35, height: 35},
+  {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx:  -.5, dy:  -0, width: 40, height: 40},
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx:  -.5, dy:-.07, width: 15, height: 15},
+  {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 30, height: 30},
+]; 
 
 //CREATES MOVING OBSTICLES
-var currentLevel = levels[0];
+//var currentLevel = levelOne[i];
 
 var levelOneMovingObstacles = function() {
-  
-  if (currentLevel.ax > 0 && currentLevel.ax < canvas.Width && currentLevel.ay > 0 && currentLevel.ay < canvas.Height) {
-    var asteroid1 = document.getElementById('rock1');
-    ctx.drawImage(asteroid1, currentLevel.ax, currentLevel.ay, 30, 30);
-    currentLevel.ax -= currentLevel.adx;
-    currentLevel.ay += currentLevel.ady;
-  } 
-  if (currentLevel.bx > 0 && currentLevel.bx < canvas.Width && currentLevel.by > 0 && currentLevel.by < canvas.Height) {
-    var asteroid2 = document.getElementById('rock2');
-    ctx.drawImage(asteroid2, currentLevel.bx, currentLevel.by, 20, 20);
-    currentLevel.bx -= currentLevel.bdx;
-    currentLevel.by += currentLevel.bdy; 
+  for (var i = 0; i < levelOne.length; i++) {
+    if (levelOne[i].x > 0 && levelOne[i].x < canvas.Width && levelOne[i].y > 0 && levelOne[i].y < canvas.Height) {
+      var asteroid = document.getElementById(levelOne[i].img);
+      ctx.drawImage(asteroid, levelOne[i].x, levelOne[i].y, levelOne[i].width, levelOne[i].height);
+      levelOne[i].x += levelOne[i].dx;
+      levelOne[i].y += levelOne[i].dy;
+    } 
   }
-  if (currentLevel.cx > 0 && currentLevel.cx < canvas.Width && currentLevel.cy > 0 && currentLevel.cy < canvas.Height) {
-    var asteroid3 = document.getElementById('rock3');
-    ctx.drawImage(asteroid3, currentLevel.cx, currentLevel.cy, 35, 35);
-    currentLevel.cx -= currentLevel.cdx;
-    currentLevel.cy += currentLevel.cdy; 
-  }
-    if (currentLevel.ex > 0 && currentLevel.ex < canvas.Width && currentLevel.ey > 0 && currentLevel.ey < canvas.Height) {
-    var asteroid4 = document.getElementById('rock4');
-    ctx.drawImage(asteroid4, currentLevel.ex, currentLevel.ey, 20, 20);
-    currentLevel.ex -= currentLevel.edx;
-    currentLevel.ey += currentLevel.edy;
-  } 
-    if (currentLevel.fx > 0 && currentLevel.fx < canvas.Width && currentLevel.fy > 0 && currentLevel.fy < canvas.Height) {
-    var asteroid1 = document.getElementById('rock1');
-    ctx.drawImage(asteroid1, currentLevel.fx, currentLevel.fy, 30, 30);
-    currentLevel.fx -= currentLevel.fdx;
-    currentLevel.fy -= currentLevel.fdy;
-  } 
-    if (currentLevel.gx > 0 && currentLevel.gx < canvas.Width && currentLevel.gy > 0 && currentLevel.gy < canvas.Height) {
-    var asteroid2 = document.getElementById('rock2');
-    ctx.drawImage(asteroid2, currentLevel.gx, currentLevel.gy, 20, 20);
-    currentLevel.gx -= currentLevel.gdx;
-    currentLevel.gy -= currentLevel.gdy; 
-  }
-    if (currentLevel.hx > 0 && currentLevel.hx < canvas.Width && currentLevel.hy > 0 && currentLevel.hy < canvas.Height) {
-    var asteroid3 = document.getElementById('rock3');
-    ctx.drawImage(asteroid3, currentLevel.hx, currentLevel.hy, 35, 35);
-    currentLevel.hx -= currentLevel.hdx;
-    currentLevel.hy -= currentLevel.hdy; 
-  }
-    if (currentLevel.jx > 0 && currentLevel.jx < canvas.Width && currentLevel.jy > 0 && currentLevel.jy < canvas.Height) {
-    var asteroid4 = document.getElementById('rock4');
-    ctx.drawImage(asteroid4, currentLevel.jx, currentLevel.jy, 40, 40);
-    currentLevel.jx -= currentLevel.jdx;
-    currentLevel.jy -= currentLevel.jdy;
-  } 
-   if (currentLevel.kx > 0 && currentLevel.kx < canvas.Width && currentLevel.ky > 0 && currentLevel.ky < canvas.Height) {
-    var asteroid1 = document.getElementById('rock1');
-    ctx.drawImage(asteroid1, currentLevel.kx, currentLevel.ky, 15, 15);
-    currentLevel.kx -= currentLevel.kdx;
-    currentLevel.ky -= currentLevel.kdy;
-  }
-   if (currentLevel.lx > 0 && currentLevel.lx < canvas.Width && currentLevel.ly > 0 && currentLevel.ly < canvas.Height) {
-    var asteroid2 = document.getElementById('rock2');
-    ctx.drawImage(asteroid2, currentLevel.lx, currentLevel.ly, 30, 30);
-    currentLevel.lx -= currentLevel.ldx;
-    currentLevel.ly -= currentLevel.ldy;
+};
+
+var levelTwoMovingObstacles = function() {
+  for (var i = 0; i < levelTwo.length; i++) {
+    if (levelTwo[i].x > 0 && levelTwo[i].x < canvas.Width && levelTwo[i].y > 0 && levelTwo[i].y < canvas.Height) {
+      var asteroid = document.getElementById(levelTwo[i].img);
+      ctx.drawImage(asteroid, levelTwo[i].x, levelTwo[i].y, levelTwo[i].width, levelTwo[i].height);
+      levelTwo[i].x += levelTwo[i].dx;
+      levelTwo[i].y += levelTwo[i].dy;
+    } 
   }
 };
 
@@ -182,18 +155,17 @@ function animateGame() {
   
   player();
   staticObstacles();
-  levelOneMovingObstacles();
+  // levelOneMovingObstacles();
+  levelTwoMovingObstacles()
   
-  checkForCollision(x, y, currentLevel.ax, currentLevel.ay);
-  checkForCollision(x, y, currentLevel.bx, currentLevel.by);
-  checkForCollision(x, y, currentLevel.cx, currentLevel.cy);
-  checkForCollision(x, y, currentLevel.ex, currentLevel.ey);
-  checkForCollision(x, y, currentLevel.fx, currentLevel.fy);
-  checkForCollision(x, y, currentLevel.gx, currentLevel.gy);
-  checkForCollision(x, y, currentLevel.hx, currentLevel.hy);
-  checkForCollision(x, y, currentLevel.jx, currentLevel.jy);
-  checkForCollision(x, y, currentLevel.kx, currentLevel.ky);
-  checkForCollision(x, y, currentLevel.lx, currentLevel.ly);
+  // for (var i = 0; i < levelOne.length; i++){
+  // checkForCollision(x, y, levelOne[i].x, levelOne[i].y);
+  // }
+  
+  for (var i = 0; i < levelTwo.length; i++){
+  checkForCollision(x, y, levelTwo[i].x, levelTwo[i].y);
+  }
+
   
 
   //CREATES THE MOVING STARS EFFECT
