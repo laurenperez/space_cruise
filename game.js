@@ -2,31 +2,42 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 canvas.Width = 800;
 canvas.Height = 500;
-//var gameInPlay = true;
 var crash = false;
+var lost = false;
+var levelComplete = false;
+var win = false;
 var level = 1;
-var gameSpeed = 20;
+var gameSpeed = 15;
+var play;
 
-window.onload = function(){
-  startGame();
-};
 
 //START ADDS EVENT LISTENER TO CANVAS & GIVES CANVAS FOCUS
 var startGame = function() { 
   canvas.addEventListener('keydown', movePlayer, true);
   canvas.focus();
+  var play = setInterval(gameLoop, gameSpeed);
   };
 
+var gameOver = function() {
+  player();
+  //display game over message
+  clearInterval(play);
+};
+
+var start = document.getElementById("start");
+start.addEventListener('click', startGame);
+
+
 //PLAYER START POSITION
-var x = (20 - 20);
-var y = (250 - 20);
+var x = (10+20);
+var y = (250+20);
 
 
 //CREATE THE PLAYER
 var player = function() {
   if (crash === false) {
     var ship = document.getElementById('ship'); 
-    ctx.drawImage(ship, x, y, 45, 45);
+    ctx.drawImage(ship, x, y, 40, 40);
     } else { 
     var explosion = document.getElementById('ship');
     explosion.src = "img/explosion.png";
@@ -37,7 +48,7 @@ var player = function() {
 
 //MOVE THE PLAYER AROUND THE CANVAS
  var movePlayer = function (event) {
-  if (crash === false) {
+  if (crash === false && lost === false && levelComplete === false) {
     //UP
     if (event.keyCode === 38) {
       y = y - 15;
@@ -46,10 +57,10 @@ var player = function() {
     if (event.keyCode === 40) {
       y = y + 15;
     }
-    //LEFT
-    if (event.keyCode === 37) {
-      x = x - 15;
-    }
+    // //LEFT
+    // if (event.keyCode === 37) {
+    //   x = x - 15;
+    // }
     //RIGHT
     if (event.keyCode === 39) {
       x = x + 15;
@@ -170,23 +181,46 @@ var movingObstacles = function(movingLevel) {
 
 //COLLISION DETECTION
 var collisionDetection = function(x1, y1, x2, y2) {
-  var xDistance = (x2 - 10) - x1;
-  var yDistance = (y2 - 10) - y1;
+  var xDistance = (x2+10) - (x1+10);
+  var yDistance = (y2+10) - (y1+10);
   var dngrZone = Math.sqrt(Math.pow(xDistance, 2) + Math.pow((yDistance), 2));
-  if (dngrZone < 28) {
+  if (dngrZone < 30) {
     crash = true;
   }
 };
 
+//CHECK FOR A COLLISION
 var checkForCollision = function(level){
   for (var i = 0; i < level.length; i++) {
     collisionDetection(x, y, level[i].x, level[i].y);
     if (crash === true) {
+      //display crash message
       gameOver();
     }
   }
 };
 
+//CHECK IF PLAYER WITHIN CANVAS BOUNDARIES
+var checkBoundaries = function() {
+ if (x < 10 || y < 10 || y > 460) {
+  var ship = document.getElementById('ship')
+  lost = true;
+  ship.src =" ";
+  console.log("lost in space!");
+  //display lost in space message on canvas 
+  gameOver();
+ }
+};
+
+var checkForWinLevel = function() {
+  if (x > 790) {
+    levelComplete = true;
+    console.log("level " + level + " complete!");
+    level += 1;
+    gameSpeed += 5
+    startGame();
+  }
+};
 
 //GAME LOOP
 var gameLoop = function() {
@@ -214,6 +248,12 @@ var gameLoop = function() {
   //DRAW PLAYER
   player();
 
+  //MAKE SURE PLAYER IS WITHIN BOUNDARIES
+  checkBoundaries();
+
+  //CHECK FOR WIN
+  checkForWinLevel();
+
   //CHECK FOR COLLISIONS IN ALL LEVELS
 if (level === 1) {
     checkForCollision(staticOne);
@@ -224,15 +264,8 @@ if (level === 1) {
   } else if (level === 3) {
     checkForCollision(staticThree);
     checkForCollision(movingThree);
-  };
+  };    
 //END OF GAME LOOP
 };
-
-var play = setInterval(gameLoop, gameSpeed);
-
-var gameOver = function() {
-  player();
-  //clearInterval(play);
-}; 
 
 
