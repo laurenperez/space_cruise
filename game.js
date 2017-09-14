@@ -2,15 +2,17 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 canvas.Width = 800;
 canvas.Height = 500;
-var gameInPlay = true;
+//var gameInPlay = true;
 var crash = false;
+var level = 1;
+var gameSpeed = 20;
 
 window.onload = function(){
   startGame();
 };
 
-var startGame = function() {
-  //ADD EVENT LISTENER TO CANVAS & GIVE CANVAS FOCUS 
+//START ADDS EVENT LISTENER TO CANVAS & GIVES CANVAS FOCUS
+var startGame = function() { 
   canvas.addEventListener('keydown', movePlayer, true);
   canvas.focus();
   };
@@ -19,27 +21,15 @@ var startGame = function() {
 var x = (20 - 20);
 var y = (250 - 20);
 
-//COLLISION DETECTION
-var checkForCollision = function(x1, y1, x2, y2) {
-  var xDistance = x2 - x1;
-  var yDistance = y2 - y1;
-  var dngrZone = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
-  if (dngrZone < 25) {
-    console.log ('crash!')
-    crash = true;
-    return true;
-  }
-};
 
 //CREATE THE PLAYER
 var player = function() {
-
   if (crash === false) {
     var ship = document.getElementById('ship'); 
     ctx.drawImage(ship, x, y, 45, 45);
-    } else {
+    } else { 
     var explosion = document.getElementById('ship');
-    explosion.src = "img/explosion3.png";
+    explosion.src = "img/explosion.png";
     ctx.drawImage(explosion, x, y, 45, 45);
   }
 };
@@ -47,26 +37,24 @@ var player = function() {
 
 //MOVE THE PLAYER AROUND THE CANVAS
  var movePlayer = function (event) {
-  //UP
-  if (event.keyCode === 38) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    y = y - 20;
+  if (crash === false) {
+    //UP
+    if (event.keyCode === 38) {
+      y = y - 15;
+    }
+    //DOWN
+    if (event.keyCode === 40) {
+      y = y + 15;
+    }
+    //LEFT
+    if (event.keyCode === 37) {
+      x = x - 15;
+    }
+    //RIGHT
+    if (event.keyCode === 39) {
+      x = x + 15;
+    } 
   }
-  //DOWN
-  if (event.keyCode === 40) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    y = y + 20;
-  }
-  //LEFT
-  if (event.keyCode === 37) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    x = x - 20;
-  }
-  //RIGHT
-  if (event.keyCode === 39) {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    x = x + 20;
-  } 
 };
 
 //STATIC OBSTACLE GENERATION SETTINGS PER LEVEL
@@ -99,31 +87,18 @@ var staticThree = [
   {thing: 'asteroid4', img: 'rock4', x: 600, y: 300, width: 50, height: 50},
   ];
 
+
 //CREATES STATIC OBSTACLES
-var staticObstaclesLevelOne = function() {
-  for (var i = 0; i < staticOne.length; i++) {
-  var asteroid = document.getElementById(staticOne[i].img);
-  ctx.drawImage(asteroid, staticOne[i].x, staticOne[i].y, staticOne[i].width, staticOne[i].height);
- }
-};
-
-var staticObstaclesLevelTwo = function() {
-  for (var i = 0; i < staticTwo.length; i++) {
-  var asteroid = document.getElementById(staticTwo[i].img);
-  ctx.drawImage(asteroid, staticTwo[i].x, staticTwo[i].y, staticTwo[i].width, staticTwo[i].height);
- }
-};
-
-var staticObstaclesLevelThree = function() {
-  for (var i = 0; i < staticThree.length; i++) {
-  var asteroid = document.getElementById(staticThree[i].img);
-  ctx.drawImage(asteroid, staticThree[i].x, staticThree[i].y, staticThree[i].width, staticThree[i].height);
- }
+var staticObstacles = function(staticLevel) {
+  for (var i = 0; i < staticLevel.length; i++) {
+    var asteroid = document.getElementById(staticLevel[i].img);
+    ctx.drawImage(asteroid, staticLevel[i].x, staticLevel[i].y, staticLevel[i].width, staticLevel[i].height);
+  }
 };
 
 
 //MOVING OBSTACLE GENERATION SETTINGS PER LEVEL
-var levelOne = [
+var movingOne = [
   {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy: .12, width: 30, height: 30},
   {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx: -.25, dy:   0, width: 20, height: 20},
   {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:   -1, dy: .12, width: 35, height: 35},
@@ -136,7 +111,7 @@ var levelOne = [
   {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 30, height: 30},
 ]; 
 
-var levelTwo = [
+var movingTwo = [
   {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy: .12, width: 30, height: 30},
   {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:  -.5, dy:  .5, width: 20, height: 20},
   {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:   -2, dy:-.12, width: 35, height: 35},
@@ -155,7 +130,7 @@ var levelTwo = [
   {thing: 'alien2', img:'alien2', x: 790, y: 350, dx:-.5, dy:-.15, width: 40, height: 40},
 ]; 
 
-var levelThree = [
+var movingThree = [
   {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy:   0, width: 30, height: 30},
   {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:  -.5, dy:   1, width: 20, height: 20},
   {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:   -2, dy:   0, width: 35, height: 35},
@@ -181,128 +156,83 @@ var levelThree = [
 
 
 //CREATES MOVING OBSTICLES
-var levelOneMovingObstacles = function() {
-  for (var i = 0; i < levelOne.length; i++) {
-    if (levelOne[i].x > 0 && levelOne[i].x < canvas.Width && levelOne[i].y > 0 && levelOne[i].y < canvas.Height) {
-      var asteroid = document.getElementById(levelOne[i].img);
-      ctx.drawImage(asteroid, levelOne[i].x, levelOne[i].y, levelOne[i].width, levelOne[i].height);
-      levelOne[i].x += levelOne[i].dx;
-      levelOne[i].y += levelOne[i].dy;
+
+var movingObstacles = function(movingLevel) {
+  for (var i = 0; i < movingLevel.length; i++) {
+    if (movingLevel[i].x > 0 && movingLevel[i].x < canvas.Width && movingLevel[i].y > 0 && movingLevel[i].y < canvas.Height) {
+      var asteroid = document.getElementById(movingLevel[i].img);
+      ctx.drawImage(asteroid, movingLevel[i].x, movingLevel[i].y, movingLevel[i].width, movingLevel[i].height);
+      movingLevel[i].x += movingLevel[i].dx;
+      movingLevel[i].y += movingLevel[i].dy;
     } 
   }
 };
 
-var levelTwoMovingObstacles = function() {
-  for (var i = 0; i < levelTwo.length; i++) {
-    if (levelTwo[i].x > 0 && levelTwo[i].x < canvas.Width && levelTwo[i].y > 0 && levelTwo[i].y < canvas.Height) {
-      var thing = document.getElementById(levelTwo[i].img);
-      ctx.drawImage(thing, levelTwo[i].x, levelTwo[i].y, levelTwo[i].width, levelTwo[i].height);
-      levelTwo[i].x += levelTwo[i].dx;
-      levelTwo[i].y += levelTwo[i].dy;
-    } 
+//COLLISION DETECTION
+var collisionDetection = function(x1, y1, x2, y2) {
+  var xDistance = (x2 - 10) - x1;
+  var yDistance = (y2 - 10) - y1;
+  var dngrZone = Math.sqrt(Math.pow(xDistance, 2) + Math.pow((yDistance), 2));
+  if (dngrZone < 28) {
+    crash = true;
   }
 };
 
-var levelThreeMovingObstacles = function() {
-  for (var i = 0; i < levelThree.length; i++) {
-    if (levelThree[i].x > 0 && levelThree[i].x < canvas.Width && levelThree[i].y > 0 && levelThree[i].y < canvas.Height) {
-      var thing = document.getElementById(levelThree[i].img);
-      ctx.drawImage(thing, levelThree[i].x, levelThree[i].y, levelThree[i].width, levelThree[i].height);
-      levelThree[i].x += levelThree[i].dx;
-      levelThree[i].y += levelThree[i].dy;
-    } 
+var checkForCollision = function(level){
+  for (var i = 0; i < level.length; i++) {
+    collisionDetection(x, y, level[i].x, level[i].y);
+    if (crash === true) {
+      gameOver();
+    }
   }
 };
 
 
-
-
-
-// LEVEL ONE 
-// var gameLoopLevelOne = function() {
-//   //CLEAR THE CANVAS
-//   ctx.clearRect(0, 0, canvas.Width, canvas.Height);
+//GAME LOOP
+var gameLoop = function() {
+  //CLEAR THE CANVAS
+  ctx.clearRect(0, 0, canvas.Width, canvas.Height);
   
-//   //CREATES THE MOVING STARS EFFECT
-//   var starsX = Math.random() * canvas.Width;
-//   var starsY = Math.random() * canvas.Height;
-//   ctx.fillStyle = 'White';
-//   ctx.fillRect(starsX, starsY, 3, 3);
+  //CREATES THE MOVING STARS EFFECT
+  var starsX = Math.random() * canvas.Width;
+  var starsY = Math.random() * canvas.Height;
+  ctx.fillStyle = 'White';
+  ctx.fillRect(starsX, starsY, 3, 3);
   
-//   //ORDER TO DRAW
-//   staticObstaclesLevelOne();
-//   levelOneMovingObstacles();
-//   player();
+  //DRAW OBSTACLES IN THIS ORDER FOR LAYERS OF CANVAS
+  if (level === 1) {
+    staticObstacles(staticOne);
+    movingObstacles(movingOne)
+  } else if (level === 2) {
+    staticObstacles(staticTwo);
+    movingObstacles(movingTwo)
+  } else if (level === 3) {
+    staticObstacles(staticThree);
+    movingObstacles(movingThree)
+  };
+ 
+  //DRAW PLAYER
+  player();
 
-//   for (var i = 0; i < levelOne.length; i++) {
-//     checkForCollision(x, y, levelOne[i].x, levelOne[i].y);
-//     if (crash === true) {
-//       gameInPlay = false;
-//     }
-//   }
-//   for (var i = 0; i < staticOne.length; i++) {
-//   checkForCollision(x, y, staticOne[i].x, staticOne[i].y);
-//   }
-// };
-// setInterval(gameLoopLevelOne, 15);
+  //CHECK FOR COLLISIONS IN ALL LEVELS
+if (level === 1) {
+    checkForCollision(staticOne);
+    checkForCollision(movingOne);
+  } else if (level === 2) {
+    checkForCollision(staticTwo);
+    checkForCollision(movingTwo);
+  } else if (level === 3) {
+    checkForCollision(staticThree);
+    checkForCollision(movingThree);
+  };
+//END OF GAME LOOP
+};
 
+var play = setInterval(gameLoop, gameSpeed);
 
-
-// LEVEL TWO
-
-// function animateGame() {
-//   requestAnimationFrame(animateGame);
-//   //CLEAR THE CANVAS
-//   ctx.clearRect(0, 0, canvas.Width, canvas.Height);
-  
-//   //CREATES THE MOVING STARS EFFECT
-//   var starsX = Math.random() * canvas.Width;
-//   var starsY = Math.random() * canvas.Height;
-//   ctx.fillStyle = 'White';
-//   ctx.fillRect(starsX, starsY, 3, 3);
-  
-//   //ORDER TO DRAW
-//   staticObstaclesLevelTwo();
-//   levelTwoMovingObstacles();
-//   player();
-
-//   for (var i = 0; i < levelTwo.length; i++) {
-//     checkForCollision(x, y, levelTwo[i].x, levelTwo[i].y);
-//   }
-//   for (var i = 0; i < staticTwo.length; i++) {
-//     checkForCollision(x, y, staticTwo[i].x, staticTwo[i].y);
-//   }
-// };
-// animateGame();
+var gameOver = function() {
+  player();
+  //clearInterval(play);
+}; 
 
 
-
-
-// LEVEL THREE
-
-// var gameLoopLevelThree = function() {
-//   //CLEAR THE CANVAS
-//   ctx.clearRect(0, 0, canvas.Width, canvas.Height);
-  
-//   //CREATES THE MOVING STARS EFFECT
-//   var starsX = Math.random() * canvas.Width;
-//   var starsY = Math.random() * canvas.Height;
-//   ctx.fillStyle = 'White';
-//   ctx.fillRect(starsX, starsY, 3, 3);
-  
-//   //ORDER TO DRAW
-//   staticObstaclesLevelThree();
-//   levelThreeMovingObstacles();
-//   player();
-
-//   for (var i = 0; i < levelOne.length; i++) {
-//     checkForCollision(x, y, levelThree[i].x, levelThree[i].y);
-//     if (crash === true) {
-//       gameInPlay = false;
-//     }
-//   }
-//   for (var i = 0; i < staticOne.length; i++) {
-//   checkForCollision(x, y, staticThree[i].x, staticThree[i].y);
-//   }
-// };
-// setInterval(gameLoopLevelThree, 15);
