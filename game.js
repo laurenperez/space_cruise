@@ -2,29 +2,46 @@ var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 canvas.Width = 800;
 canvas.Height = 500;
+var gameInPlay = true;
+var crash = false;
 
 window.onload = function(){
   startGame();
 };
 
-
 var startGame = function() {
-  //ADD EVENT LISTENER TO CANVAS, GIVE CANVAS FOCUS, ADD PLAYER TO BOARD
+  //ADD EVENT LISTENER TO CANVAS & GIVE CANVAS FOCUS 
   canvas.addEventListener('keydown', movePlayer, true);
   canvas.focus();
-  player();
   };
-
 
 //PLAYER START POSITION
 var x = (20 - 20);
 var y = (250 - 20);
 
+//COLLISION DETECTION
+var checkForCollision = function(x1, y1, x2, y2) {
+  var xDistance = x2 - x1;
+  var yDistance = y2 - y1;
+  var dngrZone = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+  if (dngrZone < 25) {
+    console.log ('crash!')
+    crash = true;
+    return true;
+  }
+};
 
 //CREATE THE PLAYER
 var player = function() {
-  var ship = document.getElementById('ship');
-  ctx.drawImage(ship, x, y, 45, 45);
+
+  if (crash === false) {
+    var ship = document.getElementById('ship'); 
+    ctx.drawImage(ship, x, y, 45, 45);
+    } else {
+    var explosion = document.getElementById('ship');
+    explosion.src = "img/explosion3.png";
+    ctx.drawImage(explosion, x, y, 45, 45);
+  }
 };
 
 
@@ -52,6 +69,7 @@ var player = function() {
   } 
 };
 
+//STATIC OBSTACLE GENERATION SETTINGS PER LEVEL
 var staticOne = [
   {thing: 'asteroid1', img: 'rock1', x: 550, y: 300, width: 30, height: 30},
   {thing: 'asteroid2', img: 'rock2', x: 350, y: 100, width: 40, height: 40},
@@ -66,11 +84,20 @@ var staticTwo = [
   {thing: 'asteroid4', img: 'rock4', x: 200, y: 300, width: 50, height: 50},
   {thing: 'asteroid1', img: 'rock1', x: 120, y: 425, width: 30, height: 30},
   {thing: 'asteroid2', img: 'rock2', x: 280, y: 100, width: 40, height: 40},
-  {thing: 'asteroid3', img: 'rock3', x: 300, y: 100, width: 20, height: 20},
+  {thing: 'asteroid3', img: 'rock3', x: 450, y:  50, width: 20, height: 20},
   {thing: 'asteroid4', img: 'rock4', x: 600, y: 400, width: 50, height: 50},
   ];
 
-
+var staticThree = [
+  {thing: 'asteroid1', img: 'rock1', x: 550, y: 400, width: 30, height: 30},
+  {thing: 'asteroid2', img: 'rock2', x: 280, y: 200, width: 40, height: 40},
+  {thing: 'asteroid3', img: 'rock3', x: 150, y: 250, width: 20, height: 20},
+  {thing: 'asteroid4', img: 'rock4', x: 200, y: 400, width: 50, height: 50},
+  {thing: 'asteroid1', img: 'rock1', x: 120, y: 325, width: 30, height: 30},
+  {thing: 'asteroid2', img: 'rock2', x: 350, y: 100, width: 40, height: 40},
+  {thing: 'asteroid3', img: 'rock3', x: 450, y:  50, width: 20, height: 20},
+  {thing: 'asteroid4', img: 'rock4', x: 600, y: 300, width: 50, height: 50},
+  ];
 
 //CREATES STATIC OBSTACLES
 var staticObstaclesLevelOne = function() {
@@ -81,18 +108,21 @@ var staticObstaclesLevelOne = function() {
 };
 
 var staticObstaclesLevelTwo = function() {
-  for (var i = 0; i < staticOne.length; i++) {
-  var asteroid = document.getElementById(staticOne[i].img);
-  ctx.drawImage(asteroid, staticOne[i].x, staticOne[i].y, staticOne[i].width, staticOne[i].height);
+  for (var i = 0; i < staticTwo.length; i++) {
+  var asteroid = document.getElementById(staticTwo[i].img);
+  ctx.drawImage(asteroid, staticTwo[i].x, staticTwo[i].y, staticTwo[i].width, staticTwo[i].height);
+ }
+};
+
+var staticObstaclesLevelThree = function() {
+  for (var i = 0; i < staticThree.length; i++) {
+  var asteroid = document.getElementById(staticThree[i].img);
+  ctx.drawImage(asteroid, staticThree[i].x, staticThree[i].y, staticThree[i].width, staticThree[i].height);
  }
 };
 
 
-
-
-
-//OBSTACLE GENERATION SETTINGS PER LEVEL
-
+//MOVING OBSTACLE GENERATION SETTINGS PER LEVEL
 var levelOne = [
   {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy: .12, width: 30, height: 30},
   {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx: -.25, dy:   0, width: 20, height: 20},
@@ -112,20 +142,45 @@ var levelTwo = [
   {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:   -2, dy:-.12, width: 35, height: 35},
   {thing: 'asteroid4', img: 'rock4', x: 550, y: Math.random() * 500, dx:  -.5, dy:   0, width: 20, height: 20},
   {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy:   0, width: 30, height: 30},
-  {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx: -.25, dy:   0, width: 20, height: 20},
+  {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:  -.5, dy:   0, width: 20, height: 20},
   {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:   -2, dy:   0, width: 35, height: 35},
   {thing: 'asteroid4', img: 'rock4', x: 550, y: Math.random() * 500, dx:  -.5, dy:   0, width: 20, height: 20},
-  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.25, dy: .07, width: 30, height: 30},
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx:  -.5, dy: .07, width: 30, height: 30},
   {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 20, height: 20},
   {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx: -.35, dy:-.07, width: 35, height: 35},
   {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx:   -1, dy:   0, width: 40, height: 40},
   {thing: 'asteroid1', img: 'rock1', x: 550, y: Math.random() * 500, dx:  -.5, dy:-.07, width: 15, height: 15},
   {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 30, height: 30},
+  {thing: 'alien1', img:'alien1', x: 790, y: 150, dx: -1, dy:   0, width: 30, height: 30},
+  {thing: 'alien2', img:'alien2', x: 790, y: 350, dx:-.5, dy:-.15, width: 40, height: 40},
 ]; 
 
-//CREATES MOVING OBSTICLES
-//var currentLevel = levelOne[i];
+var levelThree = [
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy:   0, width: 30, height: 30},
+  {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:  -.5, dy:   1, width: 20, height: 20},
+  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:   -2, dy:   0, width: 35, height: 35},
+  {thing: 'asteroid4', img: 'rock4', x: 550, y: Math.random() * 500, dx:  -.5, dy:-.12, width: 20, height: 20},
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy:   0, width: 35, height: 35},
+  {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:  -.5, dy: -.5, width: 20, height: 20},
+  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:   -2, dy:   0, width: 35, height: 35},
+  {thing: 'asteroid4', img: 'rock4', x: 550, y: Math.random() * 500, dx:  -.5, dy:  -1, width: 25, height: 25},
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx:  -.5, dy: .07, width: 30, height: 30},
+  {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:  -.5, dy:   1, width: 20, height: 20},
+  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx: -.35, dy:-.07, width: 35, height: 35},
+  {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx:   -1, dy:   0, width: 40, height: 40},
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx:  -.5, dy:   1, width: 35, height: 35},
+  {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 20, height: 20},
+  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx: -.35, dy:  -2, width: 35, height: 35},
+  {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx:   -1, dy:   0, width: 40, height: 40},
+  {thing: 'asteroid1', img: 'rock1', x: 550, y: Math.random() * 500, dx:  -.5, dy:  -1, width: 15, height: 15},
+  {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 30, height: 30},
+  {thing: 'alien1', img:'alien1', x: 790, y: 150, dx: -1, dy:   0, width: 30, height: 30},
+  {thing: 'alien2', img:'alien2', x: 790, y: 350, dx:-.5, dy:-.15, width: 20, height: 20},
+  {thing: 'alien1', img:'alien1', x: 790, y: 250, dx: -2, dy: -.5, width: 30, height: 30},
+]; 
 
+
+//CREATES MOVING OBSTICLES
 var levelOneMovingObstacles = function() {
   for (var i = 0; i < levelOne.length; i++) {
     if (levelOne[i].x > 0 && levelOne[i].x < canvas.Width && levelOne[i].y > 0 && levelOne[i].y < canvas.Height) {
@@ -140,58 +195,114 @@ var levelOneMovingObstacles = function() {
 var levelTwoMovingObstacles = function() {
   for (var i = 0; i < levelTwo.length; i++) {
     if (levelTwo[i].x > 0 && levelTwo[i].x < canvas.Width && levelTwo[i].y > 0 && levelTwo[i].y < canvas.Height) {
-      var asteroid = document.getElementById(levelTwo[i].img);
-      ctx.drawImage(asteroid, levelTwo[i].x, levelTwo[i].y, levelTwo[i].width, levelTwo[i].height);
+      var thing = document.getElementById(levelTwo[i].img);
+      ctx.drawImage(thing, levelTwo[i].x, levelTwo[i].y, levelTwo[i].width, levelTwo[i].height);
       levelTwo[i].x += levelTwo[i].dx;
       levelTwo[i].y += levelTwo[i].dy;
     } 
   }
 };
 
-
-
-//COLLISION DETECTION
-var checkForCollision = function(x1, y1, x2, y2) {
-  var xDistance = x2 - x1;
-  var yDistance = y2 - y1;
-  var dngrZone = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
-  if (dngrZone < 20) {
-    console.log ('crash!');
+var levelThreeMovingObstacles = function() {
+  for (var i = 0; i < levelThree.length; i++) {
+    if (levelThree[i].x > 0 && levelThree[i].x < canvas.Width && levelThree[i].y > 0 && levelThree[i].y < canvas.Height) {
+      var thing = document.getElementById(levelThree[i].img);
+      ctx.drawImage(thing, levelThree[i].x, levelThree[i].y, levelThree[i].width, levelThree[i].height);
+      levelThree[i].x += levelThree[i].dx;
+      levelThree[i].y += levelThree[i].dy;
+    } 
   }
-  return dngrZone;
 };
 
 
-//ANIMATES THE WHOLE GAME
-function animateGame() {
-  requestAnimationFrame(animateGame);
-  ctx.clearRect(0, 0, canvas.Width, canvas.Height);
+
+
+
+// LEVEL ONE 
+// var gameLoopLevelOne = function() {
+//   //CLEAR THE CANVAS
+//   ctx.clearRect(0, 0, canvas.Width, canvas.Height);
   
-  player();
-  // staticObstaclesLevelOne();
-  staticObstaclesLevelTwo();
-  // levelOneMovingObstacles();
-  levelTwoMovingObstacles()
+//   //CREATES THE MOVING STARS EFFECT
+//   var starsX = Math.random() * canvas.Width;
+//   var starsY = Math.random() * canvas.Height;
+//   ctx.fillStyle = 'White';
+//   ctx.fillRect(starsX, starsY, 3, 3);
   
-  // for (var i = 0; i < levelOne.length; i++){
-  // checkForCollision(x, y, levelOne[i].x, levelOne[i].y);
-  // }
+//   //ORDER TO DRAW
+//   staticObstaclesLevelOne();
+//   levelOneMovingObstacles();
+//   player();
+
+//   for (var i = 0; i < levelOne.length; i++) {
+//     checkForCollision(x, y, levelOne[i].x, levelOne[i].y);
+//     if (crash === true) {
+//       gameInPlay = false;
+//     }
+//   }
+//   for (var i = 0; i < staticOne.length; i++) {
+//   checkForCollision(x, y, staticOne[i].x, staticOne[i].y);
+//   }
+// };
+// setInterval(gameLoopLevelOne, 15);
+
+
+
+// LEVEL TWO
+
+// function animateGame() {
+//   requestAnimationFrame(animateGame);
+//   //CLEAR THE CANVAS
+//   ctx.clearRect(0, 0, canvas.Width, canvas.Height);
   
-  for (var i = 0; i < levelTwo.length; i++){
-  checkForCollision(x, y, levelTwo[i].x, levelTwo[i].y);
-  }
-
+//   //CREATES THE MOVING STARS EFFECT
+//   var starsX = Math.random() * canvas.Width;
+//   var starsY = Math.random() * canvas.Height;
+//   ctx.fillStyle = 'White';
+//   ctx.fillRect(starsX, starsY, 3, 3);
   
+//   //ORDER TO DRAW
+//   staticObstaclesLevelTwo();
+//   levelTwoMovingObstacles();
+//   player();
 
-  //CREATES THE MOVING STARS EFFECT
-  var starsX = Math.random() * canvas.Width;
-  var starsY = Math.random() * canvas.Height;
-  ctx.fillStyle = 'White';
-  ctx.fillRect(starsX, starsY, 2.5, 2.5);
+//   for (var i = 0; i < levelTwo.length; i++) {
+//     checkForCollision(x, y, levelTwo[i].x, levelTwo[i].y);
+//   }
+//   for (var i = 0; i < staticTwo.length; i++) {
+//     checkForCollision(x, y, staticTwo[i].x, staticTwo[i].y);
+//   }
+// };
+// animateGame();
+
+
+
+
+// LEVEL THREE
+
+// var gameLoopLevelThree = function() {
+//   //CLEAR THE CANVAS
+//   ctx.clearRect(0, 0, canvas.Width, canvas.Height);
   
-};
+//   //CREATES THE MOVING STARS EFFECT
+//   var starsX = Math.random() * canvas.Width;
+//   var starsY = Math.random() * canvas.Height;
+//   ctx.fillStyle = 'White';
+//   ctx.fillRect(starsX, starsY, 3, 3);
+  
+//   //ORDER TO DRAW
+//   staticObstaclesLevelThree();
+//   levelThreeMovingObstacles();
+//   player();
 
-animateGame();
-
-
-
+//   for (var i = 0; i < levelOne.length; i++) {
+//     checkForCollision(x, y, levelThree[i].x, levelThree[i].y);
+//     if (crash === true) {
+//       gameInPlay = false;
+//     }
+//   }
+//   for (var i = 0; i < staticOne.length; i++) {
+//   checkForCollision(x, y, staticThree[i].x, staticThree[i].y);
+//   }
+// };
+// setInterval(gameLoopLevelThree, 15);
