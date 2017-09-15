@@ -10,9 +10,15 @@
   
   <header></header>
 
-  <aside><p>Instructions - This game will have some basic instructions here.</p></aside>
+  <aside>
+  <p>Instructions - This game will have some basic instructions here.</p>
+  </aside>
+
+  <p id="displayMessage"></p>
+  <p id="gameMessage"></p>
 
   <button id="start">Start Game</button>
+  <button id="reset">Reset</button>
 
   <main>
   <canvas id='canvas' width='800' height='500' tabindex='1'></canvas>
@@ -50,6 +56,9 @@
   <img id="alien2" src="img/alien2.png"
        width="300" height="227">
   </div>
+  <div style="display:none;">
+  <img id="crash" src="img/explosion.png"
+       width="300" height="227">    
 
 
 
