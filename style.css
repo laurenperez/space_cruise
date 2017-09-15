@@ -1,6 +1,8 @@
 body {
     margin: 0;
     padding: 0;
+    border: 10px solid black;
+    background: white;
 }
 
 header {
@@ -10,7 +12,7 @@ header {
 
 main {
   height: 550px;
-  background: #CD4520;
+  background: url('img/space.png');
   text-align: center;
 }
 
@@ -20,7 +22,7 @@ main {
   margin: 0 20px;
   text-align: center;
   display: inline-block;
-  background-color: #292828;
+  background-color: #202020;
   vertical-align: top;
   border: 10px solid #474747;
   border-radius: 8%;
@@ -52,7 +54,7 @@ p {
   margin-bottom: 40px;
   padding: 10px 0;
   font-family: 'Press Start 2P', cursive;
-  color: #3BC485;
+  color: #44E547;
   font-size: 15px;
   text-shadow: 0 0 0.2em #8F7;
   line-height: 1.5
@@ -67,6 +69,27 @@ footer {
   margin: 0 auto;
   text-align: center;
 }
+
+#notification {
+  height: 30px;
+  width: 300px;
+  background-color: black;
+  z-index: 3;
+  position: fixed;
+  top: 45%;
+  left: 42%;
+  color: #44E547;
+  font-size: 15px;
+  line-height: 1.5;
+  font-family: 'Press Start 2P', cursive;
+  text-shadow: 0 0 0.5em #8F7;
+  border: 2px dotted #8F7;
+  border-radius: 5%;
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+}
+
 /*font-family: 'Bungee Inline', cursive;
 font-family: 'Bungee Outline', cursive;
 font-family: 'Bungee Shade', cursive;

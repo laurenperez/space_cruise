@@ -1,12 +1,16 @@
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
+var instructions = document.getElementById("instructions");
 var display = document.getElementById("displayMessage");
 var gameOverMessage = document.getElementById("gameOverMessage");
 var levelMessage = document.getElementById("levelMessage");
+var scoreDisplay = document.getElementById("scoreDisplay");
+var popUp = document.getElementById("notification");
+popUp.style.display = "none";
 canvas.Width = 800;
 canvas.Height = 500;
 
-
+var score = 0;
 var crash = false;
 var lost = false;
 var win = false;
@@ -95,6 +99,7 @@ var gameOver = function() {
   if (level === 3) {
     clearInterval(play3);
   } 
+  instructions.textContent = "PRESS RESET TO RESTART LEVEL";
 };
 
 //PLAYER START POSITION
@@ -277,23 +282,38 @@ var checkBoundaries = function() {
  }
 };
 
+
 //CHECK FOR LEVEL COMPLETION
-var checkForWinLevel = function() {
+var checkForWin = function() {
   if (x > 790) {
     x = 20;
     y = 230;
     win = true;
-  // if (level === 1) {
-  //   clearInterval(play1);
-  // }
-  // if (level === 2) {
-  //   clearInterval(play2);
-  // }
-  // if (level === 3) {
-  //   clearInterval(play3);
-  // } 
-  level += 1;
-  resetBoard();
+    if (level === 1) {
+      clearInterval(play1);
+      popUp.textContent = "LEVEL 2 STARTING NOW";
+      popUp.style.display = "initial";
+      display.textContent = "LEVEL " + level + " COMPLETE";
+    }
+    if (level === 2) {
+      clearInterval(play2);
+      popUp.textContent = "LEVEL 3 STARTING NOW";
+      popUp.style.display = "initial";
+      display.textContent = "LEVEL " + level + " COMPLETE";
+    }
+    if (level === 3) {
+      clearInterval(play3);
+      popUp.textContent = "YOU WIN";
+      popUp.style.display = "initial";
+      display.textContent = "PRESS RESET TO PLAY AGAIN";
+      ctx.clearRect(0, 0, canvas.Width, canvas.Height);
+    } 
+    level += 1;
+    setTimeout(function(){
+      popUp.style.display = "none";
+      display.textContent = " ";
+      startGame();
+    }, 5000);
   }
 };
 
@@ -330,7 +350,10 @@ var gameLoop = function() {
   checkBoundaries();
 
   //CHECK FOR WIN
-  checkForWinLevel();
+  checkForWin();
+
+  //DISPLAY SCORE
+  scoreDisplay.textContent = "SCORE " + score;
 
   //CHECK FOR COLLISIONS IN ALL LEVELS
 if (level === 1) {
