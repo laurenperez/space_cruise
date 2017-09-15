@@ -1,9 +1,72 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+  height: 100px;
+  text-align: center;
+}
+
+main {
+  height: 550px;
+  background: #CD4520;
+  text-align: center;
+}
+
+.sides {
+  height: 400px;
+  width: 250px;
+  margin: 0 20px;
+  text-align: center;
+  display: inline-block;
+  background-color: #292828;
+  vertical-align: top;
+  border: 10px solid #474747;
+  border-radius: 8%;
+}
+
+#canvasDiv {
+  height: 550px;
+  width: 850px;
+  margin: 0 auto;
+  text-align: center;
+  display: inline-block;
+  background: #292828;
+}
+
 canvas {
-      border: 1px solid #a3a3a3;
-      background-color: black;
-    }
+  border: 1px solid #292828;
+  background-color: black;
+  border-radius: 5%;
+  border: 5px solid black;
+  outline: none;
+}
 
+p {
+  height: 50px;
+  width: 250px;
+  background-color: #000000;
+  position: relative;
+  top: 10%;
+  margin-bottom: 40px;
+  padding: 10px 0;
+  font-family: 'Press Start 2P', cursive;
+  color: #3BC485;
+  font-size: 15px;
+  text-shadow: 0 0 0.2em #8F7;
+  line-height: 1.5
+}
 
+footer {
+  height: 100px;
+}
+
+#buttonDiv {
+  height: 50px;
+  margin: 0 auto;
+  text-align: center;
+}
 /*font-family: 'Bungee Inline', cursive;
 font-family: 'Bungee Outline', cursive;
 font-family: 'Bungee Shade', cursive;

@@ -1,7 +1,8 @@
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 var display = document.getElementById("displayMessage");
-var message = document.getElementById("gameMessage");
+var gameOverMessage = document.getElementById("gameOverMessage");
+var levelMessage = document.getElementById("levelMessage");
 canvas.Width = 800;
 canvas.Height = 500;
 
@@ -9,41 +10,66 @@ canvas.Height = 500;
 var crash = false;
 var lost = false;
 var win = false;
+var play1 = null;
+var play2 = null;
+var play3 = null;
+var levelOneSpeed = 15;
+var levelTwoSpeed = 20;
+var levelThreeSpeed = 25;
+
+//CURRENT LEVEL
 var level = 1;
-var gameSpeed = 15;
-var play = null;
 
 
+//RESETS THE CURRENT LEVEL
 var resetBoard = function() {
-  for (var i = 0; i < movingOne.length; i++) {
-    movingOne[i].x = movingOne[i].oX;
-    movingOne[i].y = movingOne[i].oY;
+  if (crash === true || lost === true || level === 4 || win === true) {
+    for (var i = 0; i < movingOne.length; i++) {
+      movingOne[i].x = movingOne[i].oX;
+      movingOne[i].y = movingOne[i].oY;
+    }
+    for (var i = 0; i < movingTwo.length; i++) {
+      movingTwo[i].x = movingTwo[i].oX;
+      movingTwo[i].y = movingTwo[i].oY;
+    }
+    for (var i = 0; i < movingThree.length; i++) {
+      movingThree[i].x = movingThree[i].oX;
+      movingThree[i].y = movingThree[i].oY;
+    }
+    gameOverMessage.textContent = " ";
+    display.textContent = " ";
+    levelMessage.textContent = " ";
+    x = 20;
+    y = 230;
+    crash = false;
+    lost = false;
+    win = false;
+    play1 = null;
+    play2 = null;
+    play3 = null;
+    if (level === 4) {
+      level = 1;
+    }
   }
-  for (var i = 0; i < movingTwo.length; i++) {
-    movingTwo[i].x = movingTwo[i].oX;
-    movingTwo[i].y = movingTwo[i].oY;
-  }
-  for (var i = 0; i < movingThree.length; i++) {
-    movingThree[i].x = movingThree[i].oX;
-    movingThree[i].y = movingThree[i].oY;
-  }
-  message.textContent = " ";
-  display.textContent = " ";
-  x = 20;
-  y = 230;
-  crash = false;
-  lost = false;
-  win = false;
-  canvas.focus();
+  canvas.focus()
+  startGame();
  };
+
+
 
 //START ADDS EVENT LISTENER TO CANVAS & GIVES CANVAS FOCUS
 var startGame = function() {
-  canvas.addEventListener('keydown', movePlayer, true);
+  canvas.addEventListener('keydown', movePlayer);
   canvas.focus();
-  resetBoard();
-  if (!play) {
-    play = window.setInterval(gameLoop, gameSpeed);
+  if (!play1 && level === 1) {
+    levelMessage.textContent = "LEVEL " + level;
+    play1 = window.setInterval(gameLoop, levelOneSpeed);
+  } else if (!play2 && level === 2) {
+    levelMessage.textContent = "LEVEL " + level;
+    play2 = window.setInterval(gameLoop, levelTwoSpeed);
+  } else if (!play3 && level === 3) {
+    levelMessage.textContent = "LEVEL " + level;
+    play3 = window.setInterval(gameLoop, levelThreeSpeed);
   }
   };
 
@@ -59,8 +85,16 @@ reset.addEventListener('click', resetBoard);
 
 //MESSAGE ON CONSOLE
 var gameOver = function() {
-  message.textContent = "GAME OVER"
-  //clearInterval(play);
+  gameOverMessage.textContent = "GAME OVER"
+  if (level === 1) {
+    clearInterval(play1);
+  }
+  if (level === 2) {
+    clearInterval(play2);
+  }
+  if (level === 3) {
+    clearInterval(play3);
+  } 
 };
 
 //PLAYER START POSITION
@@ -210,10 +244,10 @@ var movingObstacles = function(movingLevel) {
 
 //COLLISION DETECTION
 var collisionDetection = function(x1, y1, x2, y2) {
-  var xDistance = (x2+5) - (x1+5);
-  var yDistance = (y2+5) - (y1+5);
+  var xDistance = (x2+15) - (x1+20);
+  var yDistance = (y2+15) - (y1+20);
   var dngrZone = Math.sqrt(Math.pow(xDistance, 2) + Math.pow((yDistance), 2));
-  if (dngrZone < 25) {
+  if (dngrZone < 30) {
     crash = true;
   }
 };
@@ -234,26 +268,37 @@ var checkForCollision = function(level){
 
 //CHECK IF PLAYER WITHIN CANVAS BOUNDARIES
 var checkBoundaries = function() {
- if (x < 0 || y < 0 || y > 490) {
-  var ship = document.getElementById('ship')
-  ship.src =" ";
+ if (x < -20 || y < -30 || y > 495) {
+  display.textContent = "LOST IN SPACE";
+  lost = true;
   x = 20;
   y = 230;
-  display.textContent = "LOST IN SPACE"; 
   gameOver();
  }
 };
 
+//CHECK FOR LEVEL COMPLETION
 var checkForWinLevel = function() {
   if (x > 790) {
-    display.textContent = "LEVEL " + level + " COMPLETE";
     x = 20;
     y = 230;
-    level += 1;
-    gameSpeed += 5;
-    resetboard();
+    win = true;
+  // if (level === 1) {
+  //   clearInterval(play1);
+  // }
+  // if (level === 2) {
+  //   clearInterval(play2);
+  // }
+  // if (level === 3) {
+  //   clearInterval(play3);
+  // } 
+  level += 1;
+  resetBoard();
   }
 };
+
+
+
 
 //GAME LOOP
 var gameLoop = function() {
@@ -264,7 +309,7 @@ var gameLoop = function() {
   var starsX = Math.random() * canvas.Width;
   var starsY = Math.random() * canvas.Height;
   ctx.fillStyle = 'White';
-  ctx.fillRect(starsX, starsY, 3, 3);
+  ctx.fillRect(starsX, starsY, 3.5, 3.5);
   
   //DRAW OBSTACLES IN THIS ORDER FOR LAYERS OF CANVAS
   if (level === 1) {

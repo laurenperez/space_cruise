@@ -8,23 +8,34 @@
 </head>
 <body>
   
-  <header></header>
-
-  <aside>
-  <p>Instructions - This game will have some basic instructions here.</p>
-  </aside>
-
-  <p id="displayMessage"></p>
-  <p id="gameMessage"></p>
-
-  <button id="start">Start Game</button>
-  <button id="reset">Reset</button>
+  <header>
+    <h1>Game Logo</h1>
+  </header>
 
   <main>
-  <canvas id='canvas' width='800' height='500' tabindex='1'></canvas>
+
+    <div class="sides">
+      <p>PRESS PLAY TO START GAME</p>
+      <p id="displayMessage"></p>
+      <p id="gameOverMessage"></p>
+    </div>
+
+    <div id="canvasDiv">
+      <canvas id='canvas' width='800' height='500' tabindex='1'></canvas>
+    </div>
+
+    <div class="sides">
+      <p id="levelMessage"></p>
+    </div>
+
   </main>
 
-  <footer></footer>
+  <footer>
+    <div id="buttonDiv">
+    <button id="start">PLAY</button>
+    <button id="reset">Reset</button>
+    </div>
+  </footer>
 
 
 
@@ -58,9 +69,8 @@
   </div>
   <div style="display:none;">
   <img id="crash" src="img/explosion.png"
-       width="300" height="227">    
-
-
+       width="300" height="227"> 
+  </div>   
 
   
   <script type="text/javascript"  src="game.js"></script>
