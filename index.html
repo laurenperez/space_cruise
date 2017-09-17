@@ -9,71 +9,83 @@
 <body>
   
   <header>
-    <h1>Game Logo</h1>
+    <h1>Space Cruiser</h1>>
+    <img id="logo" src="img/logo.png">
   </header>
 
   <main>
-
     <div class="sides">
-      <p>PRESS PLAY TO START GAME</p>
-      <p id="displayMessage"></p>
-      <p id="gameOverMessage"></p>
+      <p id="displayInstructions" class="blackDisplays"></p>
+      <p id="displayMessage" class="blackDisplays"></p>
+      <p id="displayGameOver" class="blackDisplays"></p>
     </div>
-
     <div id="canvasDiv">
       <canvas id='canvas' width='800' height='500' tabindex='1'></canvas>
     </div>
-
     <div class="sides">
-      <p id="levelMessage"></p>
-      <p id="scoreDisplay"></p>
+      <p id="levelMessage" class="blackDisplays"></p>
+      <p id="scoreDisplay" class="blackDisplays"></p>
+      <p id="goalDisplay" class="blackDisplays"></p>
     </div>
-
   </main>
+
+  <div id="buttonContainer">
+    <div id="startGame" class="redButtons"></div>
+    <div id="resetGame" class="redButtons"></div>
+  </div>  
+
+  <footer>
+<!--     <button id="start">START</button>
+    <button id="reset">RESET</button> -->
+    <p class="buttonLabels">START</p>
+    <p class="buttonLabels">RESET</p>
+  </footer>
 
   <div id="notification"></div>
 
-  <footer>
-    <div id="buttonDiv">
-    <button id="start">PLAY</button>
-    <button id="reset">Reset</button>
-    </div>
-  </footer>
-
   <div style="display:none;">
-  <img id="ship" src="img/spaceship.png"
-       width="300" height="227">
+  <img id="ship" src="img/spaceship.png">
   </div>
   <div style="display:none;">
-  <img id="rock1" src="img/asteroid1.png"
-       width="300" height="227">
+  <img id="rock1" src="img/asteroid1.png">
   </div>
   <div style="display:none;">
-  <img id="rock2" src="img/asteroid2.png"
-       width="300" height="227">
+  <img id="rock2" src="img/asteroid2.png">
   </div>
   <div style="display:none;">
-  <img id="rock3" src="img/asteroid3.png"
-       width="300" height="227">
+  <img id="rock3" src="img/asteroid3.png">
   </div>
   <div style="display:none;">
-  <img id="rock4" src="img/asteroid4.png"
-       width="300" height="227">
+  <img id="rock4" src="img/asteroid4.png">
   </div>
   <div style="display:none;">
-  <img id="alien1" src="img/alien.png"
-       width="300" height="227">
+  <img id="alien1" src="img/alien.png">
   </div>
   <div style="display:none;">
-  <img id="alien2" src="img/alien2.png"
-       width="300" height="227">
+  <img id="alien2" src="img/alien2.png">
   </div>
   <div style="display:none;">
-  <img id="crash" src="img/explosion.png"
-       width="300" height="227"> 
+  <img id="crash" src="img/explosion.png">
   </div>   
+  <div style="display:none;">
+  <img id="meteor" src="img/meteor.png">
+  </div> 
+  <div style="display:none;">
+  <img id="coin" src="img/coin.png">
+  </div> 
+  <div style="display:none;">
+  <img id="coin2" src="img/coin2.png">
+  </div> 
+  <div style="display:none;">
+  <img id="coin3" src="img/coin3.png">
+  </div> 
+  <div style="display:none;">
+  <img id="guy" src="img/guy.png">
+  </div> 
+  <div style="display:none;">
+  <img id="arrow" src="img/arrow.png">
+  </div> 
 
-  
   <script type="text/javascript"  src="game.js"></script>
 </body>
 </html>

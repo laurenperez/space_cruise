@@ -1,51 +1,71 @@
 body {
     margin: 0;
     padding: 0;
-    border: 10px solid black;
-    background: white;
+    background: #0f0f0f;
 }
 
 header {
   height: 100px;
   text-align: center;
+  background: #dd5c11;
+}
+
+h1{
+position: absolute;
+top: 1%;
+left: 38%;
+font-size: 40px;
+font-family: 'Bungee Shade', cursive;
+}
+
+#logo {
+  height: 120px;
+  width: 650px;
+  z-index: 4;
+  position: relative;
 }
 
 main {
-  height: 550px;
-  background: url('img/space.png');
+  height: 525px;
+  background: url("img/stars.png");
+  background-size: cover;
   text-align: center;
+  border: 5px solid black;
 }
 
 .sides {
   height: 400px;
-  width: 250px;
   margin: 0 20px;
   text-align: center;
   display: inline-block;
-  background-color: #202020;
+  background-color: #0f0f0f;
   vertical-align: top;
-  border: 10px solid #474747;
+  border: 5px solid #232323;
   border-radius: 8%;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 #canvasDiv {
-  height: 550px;
+  height: 525px;
   width: 850px;
   margin: 0 auto;
   text-align: center;
   display: inline-block;
-  background: #292828;
+  background: #232323;
 }
 
 canvas {
-  border: 1px solid #292828;
+  border: 1px solid #0f0f0f;
   background-color: black;
   border-radius: 5%;
   border: 5px solid black;
   outline: none;
+  z-index: 1;
 }
 
-p {
+.blackDisplays {
   height: 50px;
   width: 250px;
   background-color: #000000;
@@ -60,14 +80,36 @@ p {
   line-height: 1.5
 }
 
-footer {
+.redButtons {
+  width: 100px;
   height: 100px;
+  display: inline-block;
+  margin: 0 20px;
+  background: url("img/button1.png");
 }
 
-#buttonDiv {
-  height: 50px;
-  margin: 0 auto;
+#buttonContainer {
+  height: 100px;
   text-align: center;
+  background: #dd5c11;
+}
+
+footer {
+  height: 50px;
+  background: #dd5c11;
+  text-align: center;
+}
+
+.buttonLabels {
+  height: 40px;
+  width: 60px;
+  font-size: 25px;
+  font-family: 'Bungee Inline', cursive;
+  color: #000000;
+  /*color: #dd5c11;*/
+  text-align: center;
+  display: inline;
+  margin: 0px 30px;
 }
 
 #notification {
@@ -76,8 +118,8 @@ footer {
   background-color: black;
   z-index: 3;
   position: fixed;
-  top: 45%;
-  left: 42%;
+  top: 40%;
+  left: 40%;
   color: #44E547;
   font-size: 15px;
   line-height: 1.5;
@@ -90,6 +132,8 @@ footer {
   padding: 10px;
 }
 
+
+/*alternate fonts */
 /*font-family: 'Bungee Inline', cursive;
 font-family: 'Bungee Outline', cursive;
 font-family: 'Bungee Shade', cursive;

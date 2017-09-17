@@ -1,14 +1,33 @@
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
-var instructions = document.getElementById("instructions");
-var display = document.getElementById("displayMessage");
-var gameOverMessage = document.getElementById("gameOverMessage");
-var levelMessage = document.getElementById("levelMessage");
-var scoreDisplay = document.getElementById("scoreDisplay");
-var popUp = document.getElementById("notification");
-popUp.style.display = "none";
 canvas.Width = 800;
 canvas.Height = 500;
+
+var displayOne = document.getElementById("displayInstructions");
+var displayTwo = document.getElementById("displayMessage");
+var displayGameOver = document.getElementById("displayGameOver");
+var levelMessage = document.getElementById("levelMessage");
+var scoreDisplay = document.getElementById("scoreDisplay");
+var goalDisplay = document.getElementById("goalDisplay");
+var popUp = document.getElementById("notification");
+var redStartButton = document.getElementById("startGame");
+var redResetButton = document.getElementById("resetGame");
+
+redStartButton.addEventListener("mousedown", function(){
+  redStartButton.style.backgroundImage = "url('img/button2.png')";
+});
+redStartButton.addEventListener("mouseup", function(){
+  redStartButton.style.backgroundImage = "url('img/button1.png')";
+});
+redResetButton.addEventListener("mousedown", function(){
+  redResetButton.style.backgroundImage = "url('img/button2.png')";
+});
+redResetButton.addEventListener("mouseup", function(){
+  redResetButton.style.backgroundImage = "url('img/button1.png')";
+});
+
+popUp.style.display = "none";
+displayOne.textContent = "PRESS START TO BEGIN GAME";
 
 var score = 0;
 var crash = false;
@@ -17,13 +36,12 @@ var win = false;
 var play1 = null;
 var play2 = null;
 var play3 = null;
-var levelOneSpeed = 15;
-var levelTwoSpeed = 20;
-var levelThreeSpeed = 25;
+var levelOneSpeed = 20;
+var levelTwoSpeed = 15;
+var levelThreeSpeed = 10;
 
-//CURRENT LEVEL
-var level = 1;
-
+//STARTING LEVEL
+var level = 3;
 
 //RESETS THE CURRENT LEVEL
 var resetBoard = function() {
@@ -40,9 +58,23 @@ var resetBoard = function() {
       movingThree[i].x = movingThree[i].oX;
       movingThree[i].y = movingThree[i].oY;
     }
-    gameOverMessage.textContent = " ";
-    display.textContent = " ";
+     for (var i = 0; i < spaceTreasuresOne.length; i++) {
+      spaceTreasuresOne[i].x = spaceTreasuresOne[i].oX;
+      spaceTreasuresOne[i].y = spaceTreasuresOne[i].oY;
+    }
+    for (var i = 0; i < spaceTreasuresTwo.length; i++) {
+      spaceTreasuresTwo[i].x = spaceTreasuresTwo[i].oX;
+      spaceTreasuresTwo[i].y = spaceTreasuresTwo[i].oY;
+    }
+    for (var i = 0; i < spaceTreasuresThree.length; i++) {
+      spaceTreasuresThree[i].x = spaceTreasuresThree[i].oX;
+      spaceTreasuresThree[i].y = spaceTreasuresThree[i].oY;
+    }
+    displayOne.textContent = " ";
+    displayTwo.textContent = " ";
+    displayGameOver.textContent = " ";
     levelMessage.textContent = " ";
+    goalDisplay.textContent = " ";
     x = 20;
     y = 230;
     crash = false;
@@ -59,37 +91,37 @@ var resetBoard = function() {
   startGame();
  };
 
-
-
 //START ADDS EVENT LISTENER TO CANVAS & GIVES CANVAS FOCUS
 var startGame = function() {
   canvas.addEventListener('keydown', movePlayer);
   canvas.focus();
+  displayOne.textContent = " ";
   if (!play1 && level === 1) {
     levelMessage.textContent = "LEVEL " + level;
+    goalDisplay.textContent = "COLLECT THE COINS";
     play1 = window.setInterval(gameLoop, levelOneSpeed);
   } else if (!play2 && level === 2) {
     levelMessage.textContent = "LEVEL " + level;
+    goalDisplay.textContent = "COLLECT THE COINS";
     play2 = window.setInterval(gameLoop, levelTwoSpeed);
   } else if (!play3 && level === 3) {
     levelMessage.textContent = "LEVEL " + level;
+    goalDisplay.textContent = "SAVE THE ASTRONAUT";
     play3 = window.setInterval(gameLoop, levelThreeSpeed);
   }
   };
 
 //CLICK START TO START GAME
-var start = document.getElementById("start");
-start.addEventListener('click', startGame);
+redStartButton.addEventListener('click', startGame);
 
 //CLICK RESET TO RESET GAME
-var reset = document.getElementById("reset");
-reset.addEventListener('click', resetBoard);
-
+redResetButton.addEventListener('click', resetBoard);
 
 
 //MESSAGE ON CONSOLE
 var gameOver = function() {
-  gameOverMessage.textContent = "GAME OVER"
+  displayOne.textContent = "PRESS RESET TO RESTART LEVEL";
+  displayGameOver.textContent = "GAME OVER"
   if (level === 1) {
     clearInterval(play1);
   }
@@ -99,7 +131,6 @@ var gameOver = function() {
   if (level === 3) {
     clearInterval(play3);
   } 
-  instructions.textContent = "PRESS RESET TO RESTART LEVEL";
 };
 
 //PLAYER START POSITION
@@ -136,7 +167,42 @@ var player = function() {
   }
 };
 
-//STATIC OBSTACLE GENERATION SETTINGS PER LEVEL
+
+//STAIC TREASURES
+var spaceTreasuresOne = [
+  {thing: 'yellowCoin', img: 'coin', x: 600, y: 100, width: 20, height: 20, points: 100, oX: 600, oY: 100},
+  {thing: 'yellowCoin', img: 'coin', x: 200, y: 300, width: 20, height: 20, points: 100, oX: 200, oY: 300}, 
+  {thing: 'yellowCoin', img: 'coin', x: 200, y: 100, width: 20, height: 20, points: 100, oX: 200, oY: 100},
+  {thing: 'yellowCoin', img: 'coin', x: 650, y: 450, width: 20, height: 20, points: 100, oX: 650, oY: 450},
+  {thing: 'arrow', img: 'arrow', x: 780, y: 245, width: 20, height: 20, oX: 780, oY: 245},
+  ];
+
+var spaceTreasuresTwo = [
+  {thing: 'yellowCoin', img: 'coin', x: 600, y: 200, width: 20, height: 20, points: 100, oX: 600, oY: 200},
+  {thing: 'yellowCoin', img: 'coin', x: 200, y: 350, width: 20, height: 20, points: 100, oX: 200, oY: 350},
+  {thing: 'yellowCoin', img: 'coin', x: 200, y: 50, width: 20, height: 20, points: 100, oX: 200, oY: 50},
+  {thing: 'yellowCoin', img: 'coin', x: 100, y: 450, width: 20, height: 20, points: 100, oX: 100, oY: 450},
+  {thing: 'greenCoin', img: 'coin2', x: 300, y: 250, width: 20, height: 20, points: 200, oX: 300, oY: 250},
+  {thing: 'greenCoin', img: 'coin2', x: 400, y: 450, width: 20, height: 20, points: 200, oX: 400, oY: 450},
+  {thing: 'greenCoin', img: 'coin2', x: 500, y: 200, width: 20, height: 20, points: 200, oX: 500, oY: 200},
+  {thing: 'redCoin', img: 'coin3', x: 600, y: 380, width: 20, height: 20, points: 300, oX: 600, oY: 380},
+  {thing: 'arrow', img: 'arrow', x: 780, y: 245, width: 20, height: 20, oX: 780, oY: 245},
+  ];
+
+var spaceTreasuresThree = [
+  {thing: 'yellowCoin', img: 'coin', x: 500, y: 450, width: 20, height: 20, points: 100, oX: 500, oY: 450},
+  {thing: 'yellowCoin', img: 'coin', x: 300, y: 250, width: 20, height: 20, points: 100, oX: 300, oY: 250},
+  {thing: 'yellowCoin', img: 'coin', x: 300, y: 50, width: 20, height: 20, points: 100, oX: 300, oY: 50},
+  {thing: 'yellowCoin', img: 'coin', x: 100, y: 400, width: 20, height: 20, points: 100, oX: 100, oY: 400},
+  {thing: 'greenCoin', img: 'coin2', x: 400, y: 500, width: 20, height: 20, points: 200, oX: 400, oY: 500},
+  {thing: 'greenCoin', img: 'coin2', x: 200, y: 100, width: 20, height: 20, points: 200, oX: 200, oY: 100},
+  {thing: 'greenCoin', img: 'coin2', x: 500, y: 250, width: 20, height: 20, points: 200, oX: 500, oY: 250},
+  {thing: 'redCoin', img: 'coin3', x: 600, y: 360, width: 20, height: 20, points: 300, oX: 600, oY: 360},
+  {thing: 'astronaut', img: 'guy', x: 600, y: 100, width: 40, height: 40, points: 1000, oX: 600, oY: 100},
+  {thing: 'arrow', img: 'arrow', x: 780, y: 245, width: 20, height: 20, oX: 780, oY: 245},
+  ];
+
+//STATIC OBSTACLES
 var staticOne = [
   {thing: 'asteroid1', img: 'rock1', x: 550, y: 300, width: 30, height: 30},
   {thing: 'asteroid2', img: 'rock2', x: 350, y: 100, width: 40, height: 40},
@@ -166,17 +232,7 @@ var staticThree = [
   {thing: 'asteroid4', img: 'rock4', x: 600, y: 300, width: 50, height: 50},
   ];
 
-
-//CREATES STATIC OBSTACLES
-var staticObstacles = function(staticLevel) {
-  for (var i = 0; i < staticLevel.length; i++) {
-    var asteroid = document.getElementById(staticLevel[i].img);
-    ctx.drawImage(asteroid, staticLevel[i].x, staticLevel[i].y, staticLevel[i].width, staticLevel[i].height);
-  }
-};
-
-
-//MOVING OBSTACLE GENERATION SETTINGS PER LEVEL
+//MOVING OBSTACLES 
 var movingOne = [
   {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy: .12, width: 30, height: 30, oX: 790, oY: Math.random() * 500}, 
   {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx: -.25, dy:   0, width: 20, height: 20, oX: 790, oY: Math.random() * 500},
@@ -210,29 +266,52 @@ var movingTwo = [
 ]; 
 
 var movingThree = [
-  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy:   0, width: 30, height: 30, oX: 790, oY: Math.random() * 500},
-  {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:  -.5, dy:   1, width: 30, height: 30, oX: 550, oY: Math.random() * 500},
-  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:   -2, dy:   0, width: 25, height: 25, oX: 790, oY: Math.random() * 500},
-  {thing: 'asteroid4', img: 'rock4', x: 550, y: Math.random() * 500, dx:  -.5, dy:-.12, width: 30, height: 30, oX: 550, oY: Math.random() * 500},
-  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy:   0, width: 35, height: 35, oX: 790, oY: Math.random() * 500},
-  {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:  -.5, dy: -.5, width: 20, height: 20, oX: 550, oY: Math.random() * 500},
-  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:   -2, dy:   0, width: 25, height: 25, oX: 790, oY: Math.random() * 500},
-  {thing: 'asteroid4', img: 'rock4', x: 550, y: Math.random() * 500, dx:  -.5, dy:  -1, width: 30, height: 30, oX: 550, oY: Math.random() * 500},
-  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx:  -.5, dy: .07, width: 30, height: 30, oX: 790, oY: Math.random() * 500},
-  {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:  -.5, dy:   1, width: 20, height: 20, oX: 550, oY: Math.random() * 500},
-  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx: -.35, dy:-.07, width: 35, height: 35, oX: 790, oY: Math.random() * 500},
-  {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx:   -1, dy:   0, width: 40, height: 40, oX: 790, oY: Math.random() * 500},
-  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx:  -.5, dy:   1, width: 35, height: 35, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx:   -1, dy:   0, width: 30, height: 30, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:  -.5, dy: .25, width: 30, height: 30, oX: 550, oY: Math.random() * 500},
+  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx: -.35, dy:  .5, width: 25, height: 25, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid4', img: 'rock4', x: 550, y: Math.random() * 500, dx:   -1, dy:-.12, width: 30, height: 30, oX: 550, oY: Math.random() * 500},
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx:  -.5, dy:   0, width: 35, height: 35, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx: -.35, dy: -.5, width: 20, height: 20, oX: 550, oY: Math.random() * 500},
+  {thing: 'asteroid3', img:'meteor', x: 790, y: Math.random() * 500, dx: -1.5, dy:   0, width: 25, height: 25, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid4', img: 'rock4', x: 550, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 30, height: 30, oX: 550, oY: Math.random() * 500},
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy: .25, width: 30, height: 30, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:   -1, dy:  .5, width: 20, height: 20, oX: 550, oY: Math.random() * 500},
+  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:  -.5, dy:-.12, width: 35, height: 35, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx: -.35, dy:   0, width: 40, height: 40, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid1', img:'meteor', x: 790, y: Math.random() * 500, dx: -1.5, dy:  .5, width: 35, height: 35, oX: 790, oY: Math.random() * 500},
   {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 30, height: 30, oX: 550, oY: Math.random() * 500},
-  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx: -.35, dy:  -2, width: 25, height: 25, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 25, height: 25, oX: 790, oY: Math.random() * 500},
   {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx:   -1, dy:   0, width: 40, height: 40, oX: 790, oY: Math.random() * 500},
-  {thing: 'asteroid1', img: 'rock1', x: 550, y: Math.random() * 500, dx:  -.5, dy:  -1, width: 15, height: 15, oX: 550, oY: Math.random() * 500},
-  {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 30, height: 30, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid1', img: 'rock1', x: 550, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 15, height: 15, oX: 550, oY: Math.random() * 500},
+  {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx: -.35, dy:   0, width: 30, height: 30, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 35, height: 35, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx: -.35, dy:   0, width: 40, height: 40, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid1', img:'meteor', x: 790, y: Math.random() * 500, dx:   -1, dy: .25, width: 35, height: 35, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid2', img: 'rock2', x: 550, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 30, height: 30, oX: 550, oY: Math.random() * 500},
+  {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx: -.35, dy:   0, width: 25, height: 25, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx:   -1, dy:   0, width: 40, height: 40, oX: 790, oY: Math.random() * 500},
+  {thing: 'asteroid1', img: 'rock1', x: 550, y: Math.random() * 500, dx:  -.5, dy:   0, width: 15, height: 15, oX: 550, oY: Math.random() * 500},
+  {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx: -.35, dy:-.25, width: 30, height: 30, oX: 790, oY: Math.random() * 500},
   {thing: 'alien1', img:'alien1', x: 790, y: 150, dx: -1, dy:   0, width: 30, height: 30, oX: 790, oY: 150},
   {thing: 'alien2', img:'alien2', x: 790, y: 350, dx:-.5, dy:-.15, width: 20, height: 20, oX: 790, oY: 350},
   {thing: 'alien1', img:'alien1', x: 790, y: 250, dx: -2, dy: -.5, width: 30, height: 30, oX: 790, oY: 250},
 ]; 
 
+//CREATES STATIC TREASURES
+var staticTreasures = function(staticTreasure) {
+  for (var i = 0; i < staticTreasure.length; i++) {
+    var treasure = document.getElementById(staticTreasure[i].img);
+    ctx.drawImage(treasure, staticTreasure[i].x, staticTreasure[i].y, staticTreasure[i].width, staticTreasure[i].height);
+  }
+};
+
+//CREATES STATIC OBSTACLES
+var staticObstacles = function(staticLevel) {
+  for (var i = 0; i < staticLevel.length; i++) {
+    var asteroid = document.getElementById(staticLevel[i].img);
+    ctx.drawImage(asteroid, staticLevel[i].x, staticLevel[i].y, staticLevel[i].width, staticLevel[i].height);
+  }
+};
 
 //CREATES MOVING OBSTICLES
 var movingObstacles = function(movingLevel) {
@@ -245,7 +324,6 @@ var movingObstacles = function(movingLevel) {
     } 
   }
 };
-
 
 //COLLISION DETECTION
 var collisionDetection = function(x1, y1, x2, y2) {
@@ -262,7 +340,7 @@ var checkForCollision = function(level){
   for (var i = 0; i < level.length; i++) {
     collisionDetection(x, y, level[i].x, level[i].y);
     if (crash === true) {
-      display.textContent = "PLAYER 1 DESTROYED";
+      displayTwo.textContent = "PLAYER 1 DESTROYED";
       gameOver();
       var explosion = document.getElementById('crash');
       explosion.src = "img/explosion.png";
@@ -271,10 +349,23 @@ var checkForCollision = function(level){
   }
 };
 
+//CHECK FOR TREASURE COLLISION
+var treasureCollision = function(treasures){
+  for (var i = 0; i < treasures.length; i++) {
+    collisionDetection(x, y, treasures[i].x, treasures[i].y);
+    if (crash === true) {
+    crash = false;
+    score += treasures[i].points;
+    treasures[i].x = -50;
+    treasures[i].y = -50;
+    }
+  }
+};
+
 //CHECK IF PLAYER WITHIN CANVAS BOUNDARIES
 var checkBoundaries = function() {
  if (x < -20 || y < -30 || y > 495) {
-  display.textContent = "LOST IN SPACE";
+  displayTwo.textContent = "LOST IN SPACE";
   lost = true;
   x = 20;
   y = 230;
@@ -293,25 +384,26 @@ var checkForWin = function() {
       clearInterval(play1);
       popUp.textContent = "LEVEL 2 STARTING NOW";
       popUp.style.display = "initial";
-      display.textContent = "LEVEL " + level + " COMPLETE";
+      displayTwo.textContent = "LEVEL " + level + " COMPLETE";
     }
     if (level === 2) {
       clearInterval(play2);
       popUp.textContent = "LEVEL 3 STARTING NOW";
       popUp.style.display = "initial";
-      display.textContent = "LEVEL " + level + " COMPLETE";
+      displayTwo.textContent = "LEVEL " + level + " COMPLETE";
     }
     if (level === 3) {
       clearInterval(play3);
-      popUp.textContent = "YOU WIN";
+      popUp.textContent = "WINNER";
       popUp.style.display = "initial";
-      display.textContent = "PRESS RESET TO PLAY AGAIN";
+      displayOne.textContent = "PRESS RESET TO PLAY AGAIN";
       ctx.clearRect(0, 0, canvas.Width, canvas.Height);
     } 
     level += 1;
     setTimeout(function(){
       popUp.style.display = "none";
-      display.textContent = " ";
+      displayOne.textContent = " ";
+      displayTwo.textContent = " ";
       startGame();
     }, 5000);
   }
@@ -330,17 +422,21 @@ var gameLoop = function() {
   var starsY = Math.random() * canvas.Height;
   ctx.fillStyle = 'White';
   ctx.fillRect(starsX, starsY, 3.5, 3.5);
+  ctx.fillRect(starsX, starsY, 2, 2);
   
   //DRAW OBSTACLES IN THIS ORDER FOR LAYERS OF CANVAS
   if (level === 1) {
     staticObstacles(staticOne);
     movingObstacles(movingOne);
+    staticTreasures(spaceTreasuresOne);
   } else if (level === 2) {
     staticObstacles(staticTwo);
     movingObstacles(movingTwo);
+    staticTreasures(spaceTreasuresTwo);
   } else if (level === 3) {
     staticObstacles(staticThree);
     movingObstacles(movingThree);
+    staticTreasures(spaceTreasuresThree);
   };
  
   //DRAW PLAYER
@@ -352,17 +448,21 @@ var gameLoop = function() {
   //CHECK FOR WIN
   checkForWin();
 
-  //DISPLAY SCORE
+  //DISPLAYS
   scoreDisplay.textContent = "SCORE " + score;
+
 
   //CHECK FOR COLLISIONS IN ALL LEVELS
 if (level === 1) {
+    treasureCollision(spaceTreasuresOne);
     checkForCollision(staticOne);
     checkForCollision(movingOne);
   } else if (level === 2) {
+    treasureCollision(spaceTreasuresTwo);
     checkForCollision(staticTwo);
     checkForCollision(movingTwo);
   } else if (level === 3) {
+    treasureCollision(spaceTreasuresThree);
     checkForCollision(staticThree);
     checkForCollision(movingThree);
   };    
