@@ -6,7 +6,7 @@ canvas.Height = 500;
 var displayOne = document.getElementById("displayInstructions");
 var displayTwo = document.getElementById("displayMessage");
 var displayGameOver = document.getElementById("displayGameOver");
-var levelMessage = document.getElementById("levelMessage");
+var levelDisplay = document.getElementById("levelDisplay");
 var scoreDisplay = document.getElementById("scoreDisplay");
 var goalDisplay = document.getElementById("goalDisplay");
 var popUp = document.getElementById("notification");
@@ -40,10 +40,10 @@ var levelOneSpeed = 20;
 var levelTwoSpeed = 15;
 var levelThreeSpeed = 10;
 
-//STARTING LEVEL
-var level = 3;
+//GAME LEVEL
+var level = 1;
 
-//RESETS THE CURRENT LEVEL
+//RESETS THE CURRENT LEVEL AND ALL LEVELS AFTER WIN
 var resetBoard = function() {
   if (crash === true || lost === true || level === 4 || win === true) {
     for (var i = 0; i < movingOne.length; i++) {
@@ -73,7 +73,7 @@ var resetBoard = function() {
     displayOne.textContent = " ";
     displayTwo.textContent = " ";
     displayGameOver.textContent = " ";
-    levelMessage.textContent = " ";
+    levelDisplay.textContent = " ";
     goalDisplay.textContent = " ";
     x = 20;
     y = 230;
@@ -85,31 +85,33 @@ var resetBoard = function() {
     play3 = null;
     if (level === 4) {
       level = 1;
+      score = 0;
     }
-  }
   canvas.focus()
   startGame();
+  }
  };
 
-//START ADDS EVENT LISTENER TO CANVAS & GIVES CANVAS FOCUS
+//STARTS GAME LOOPS, ADDS EVENT LISTENER TO CANVAS & GIVES CANVAS FOCUS
 var startGame = function() {
+  win = false;
   canvas.addEventListener('keydown', movePlayer);
   canvas.focus();
   displayOne.textContent = " ";
   if (!play1 && level === 1) {
-    levelMessage.textContent = "LEVEL " + level;
+    levelDisplay.textContent = "LEVEL " + level;
     goalDisplay.textContent = "COLLECT THE COINS";
     play1 = window.setInterval(gameLoop, levelOneSpeed);
   } else if (!play2 && level === 2) {
-    levelMessage.textContent = "LEVEL " + level;
+    levelDisplay.textContent = "LEVEL " + level;
     goalDisplay.textContent = "COLLECT THE COINS";
     play2 = window.setInterval(gameLoop, levelTwoSpeed);
   } else if (!play3 && level === 3) {
-    levelMessage.textContent = "LEVEL " + level;
+    levelDisplay.textContent = "LEVEL " + level;
     goalDisplay.textContent = "SAVE THE ASTRONAUT";
     play3 = window.setInterval(gameLoop, levelThreeSpeed);
   }
-  };
+};
 
 //CLICK START TO START GAME
 redStartButton.addEventListener('click', startGame);
@@ -117,8 +119,7 @@ redStartButton.addEventListener('click', startGame);
 //CLICK RESET TO RESET GAME
 redResetButton.addEventListener('click', resetBoard);
 
-
-//MESSAGE ON CONSOLE
+//CLEARS CURRENT GAME INTERVAL WHEN GAME IS LOST
 var gameOver = function() {
   displayOne.textContent = "PRESS RESET TO RESTART LEVEL";
   displayGameOver.textContent = "GAME OVER"
@@ -137,17 +138,15 @@ var gameOver = function() {
 var x = 20;
 var y = 230;
 
-
-//CREATE THE PLAYER
+//CREATES THE PLAYER
 var player = function() {
     var ship = document.getElementById('ship'); 
     ctx.drawImage(ship, x, y, 40, 40);
 };
 
-
-//MOVE THE PLAYER AROUND THE CANVAS
+//MOVES THE PLAYER AROUND THE CANVAS
  var movePlayer = function (event) {
-  if (crash === false && lost === false) {
+  if (crash === false && lost === false && win === false) {
     //UP
     if (event.keyCode === 38) {
       y = y - 15;
@@ -167,14 +166,13 @@ var player = function() {
   }
 };
 
-
-//STAIC TREASURES
+//STAIC TREASURES ON GAME BOARD
 var spaceTreasuresOne = [
   {thing: 'yellowCoin', img: 'coin', x: 600, y: 100, width: 20, height: 20, points: 100, oX: 600, oY: 100},
   {thing: 'yellowCoin', img: 'coin', x: 200, y: 300, width: 20, height: 20, points: 100, oX: 200, oY: 300}, 
   {thing: 'yellowCoin', img: 'coin', x: 200, y: 100, width: 20, height: 20, points: 100, oX: 200, oY: 100},
   {thing: 'yellowCoin', img: 'coin', x: 650, y: 450, width: 20, height: 20, points: 100, oX: 650, oY: 450},
-  {thing: 'arrow', img: 'arrow', x: 780, y: 245, width: 20, height: 20, oX: 780, oY: 245},
+  {thing: 'arrow', img: 'arrow', x: 780, y: 245, width: 20, height: 20, points: 500, oX: 780, oY: 245},
   ];
 
 var spaceTreasuresTwo = [
@@ -186,7 +184,7 @@ var spaceTreasuresTwo = [
   {thing: 'greenCoin', img: 'coin2', x: 400, y: 450, width: 20, height: 20, points: 200, oX: 400, oY: 450},
   {thing: 'greenCoin', img: 'coin2', x: 500, y: 200, width: 20, height: 20, points: 200, oX: 500, oY: 200},
   {thing: 'redCoin', img: 'coin3', x: 600, y: 380, width: 20, height: 20, points: 300, oX: 600, oY: 380},
-  {thing: 'arrow', img: 'arrow', x: 780, y: 245, width: 20, height: 20, oX: 780, oY: 245},
+  {thing: 'arrow', img: 'arrow', x: 780, y: 245, width: 20, height: 20, points: 500, oX: 780, oY: 245},
   ];
 
 var spaceTreasuresThree = [
@@ -199,10 +197,10 @@ var spaceTreasuresThree = [
   {thing: 'greenCoin', img: 'coin2', x: 500, y: 250, width: 20, height: 20, points: 200, oX: 500, oY: 250},
   {thing: 'redCoin', img: 'coin3', x: 600, y: 360, width: 20, height: 20, points: 300, oX: 600, oY: 360},
   {thing: 'astronaut', img: 'guy', x: 600, y: 100, width: 40, height: 40, points: 1000, oX: 600, oY: 100},
-  {thing: 'arrow', img: 'arrow', x: 780, y: 245, width: 20, height: 20, oX: 780, oY: 245},
+  {thing: 'arrow', img: 'arrow', x: 780, y: 245, width: 20, height: 20, points: 500, oX: 780, oY: 245},
   ];
 
-//STATIC OBSTACLES
+//STATIC OBSTACLES ON GAME BOARD
 var staticOne = [
   {thing: 'asteroid1', img: 'rock1', x: 550, y: 300, width: 30, height: 30},
   {thing: 'asteroid2', img: 'rock2', x: 350, y: 100, width: 40, height: 40},
@@ -232,7 +230,7 @@ var staticThree = [
   {thing: 'asteroid4', img: 'rock4', x: 600, y: 300, width: 50, height: 50},
   ];
 
-//MOVING OBSTACLES 
+//MOVING OBSTACLES ON GAME BOARD
 var movingOne = [
   {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy: .12, width: 30, height: 30, oX: 790, oY: Math.random() * 500}, 
   {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx: -.25, dy:   0, width: 20, height: 20, oX: 790, oY: Math.random() * 500},
@@ -313,7 +311,7 @@ var staticObstacles = function(staticLevel) {
   }
 };
 
-//CREATES MOVING OBSTICLES
+//CREATES MOVING OBSTACLES
 var movingObstacles = function(movingLevel) {
   for (var i = 0; i < movingLevel.length; i++) {
     if (movingLevel[i].x > -30 && movingLevel[i].x < (canvas.Width + 30) && movingLevel[i].y > -30 && movingLevel[i].y < (canvas.Height + 30)){
@@ -325,7 +323,7 @@ var movingObstacles = function(movingLevel) {
   }
 };
 
-//COLLISION DETECTION
+//COLLISION DETECTION EQUATION
 var collisionDetection = function(x1, y1, x2, y2) {
   var xDistance = (x2+15) - (x1+20);
   var yDistance = (y2+15) - (y1+20);
@@ -335,7 +333,7 @@ var collisionDetection = function(x1, y1, x2, y2) {
   }
 };
 
-//CHECK FOR A COLLISION
+//CHECKS FOR COLLISION WITH OBSTACLES
 var checkForCollision = function(level){
   for (var i = 0; i < level.length; i++) {
     collisionDetection(x, y, level[i].x, level[i].y);
@@ -349,7 +347,7 @@ var checkForCollision = function(level){
   }
 };
 
-//CHECK FOR TREASURE COLLISION
+//CHECKS FOR COLLISIONS WITH TREASURE
 var treasureCollision = function(treasures){
   for (var i = 0; i < treasures.length; i++) {
     collisionDetection(x, y, treasures[i].x, treasures[i].y);
@@ -362,7 +360,7 @@ var treasureCollision = function(treasures){
   }
 };
 
-//CHECK IF PLAYER WITHIN CANVAS BOUNDARIES
+//CHECKS IF PLAYER IS WITHIN CANVAS BOUNDARIES
 var checkBoundaries = function() {
  if (x < -20 || y < -30 || y > 495) {
   displayTwo.textContent = "LOST IN SPACE";
@@ -373,12 +371,9 @@ var checkBoundaries = function() {
  }
 };
 
-
-//CHECK FOR LEVEL COMPLETION
+//CHECKS FOR LEVEL COMPLETION
 var checkForWin = function() {
-  if (x > 790) {
-    x = 20;
-    y = 230;
+  if (x > 795) {
     win = true;
     if (level === 1) {
       clearInterval(play1);
@@ -394,9 +389,9 @@ var checkForWin = function() {
     }
     if (level === 3) {
       clearInterval(play3);
-      popUp.textContent = "WINNER";
+      popUp.textContent = "YOU WIN";
       popUp.style.display = "initial";
-      displayOne.textContent = "PRESS RESET TO PLAY AGAIN";
+      displayOne.textContent = "PRESS RESET TO BEGIN A NEW GAME";
       ctx.clearRect(0, 0, canvas.Width, canvas.Height);
     } 
     level += 1;
@@ -405,26 +400,22 @@ var checkForWin = function() {
       displayOne.textContent = " ";
       displayTwo.textContent = " ";
       startGame();
-    }, 5000);
+    }, 4000);
+    x = 20;
+    y = 230;
   }
 };
 
-
-
-
 //GAME LOOP
 var gameLoop = function() {
-  //CLEAR THE CANVAS
   ctx.clearRect(0, 0, canvas.Width, canvas.Height);
-  
   //CREATES THE MOVING STARS EFFECT
   var starsX = Math.random() * canvas.Width;
   var starsY = Math.random() * canvas.Height;
   ctx.fillStyle = 'White';
   ctx.fillRect(starsX, starsY, 3.5, 3.5);
   ctx.fillRect(starsX, starsY, 2, 2);
-  
-  //DRAW OBSTACLES IN THIS ORDER FOR LAYERS OF CANVAS
+  //DRAWS OBSTACLES IN THIS ORDER FOR LAYERS OF CANVAS
   if (level === 1) {
     staticObstacles(staticOne);
     movingObstacles(movingOne);
@@ -438,20 +429,14 @@ var gameLoop = function() {
     movingObstacles(movingThree);
     staticTreasures(spaceTreasuresThree);
   };
- 
   //DRAW PLAYER
   player();
-
   //MAKE SURE PLAYER IS WITHIN BOUNDARIES
   checkBoundaries();
-
   //CHECK FOR WIN
   checkForWin();
-
-  //DISPLAYS
+  //DISPLAYS SCORE
   scoreDisplay.textContent = "SCORE " + score;
-
-
   //CHECK FOR COLLISIONS IN ALL LEVELS
 if (level === 1) {
     treasureCollision(spaceTreasuresOne);
@@ -466,7 +451,5 @@ if (level === 1) {
     checkForCollision(staticThree);
     checkForCollision(movingThree);
   };    
-//END OF GAME LOOP
 };
-
- 
+//END

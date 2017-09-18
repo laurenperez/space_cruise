@@ -10,12 +10,12 @@ header {
   background: #dd5c11;
 }
 
-h1{
-position: absolute;
-top: 1%;
-left: 38%;
-font-size: 40px;
-font-family: 'Bungee Shade', cursive;
+h1 {
+  position: absolute;
+  top: 1%;
+  left: 38%;
+  font-size: 40px;
+  font-family: 'Bungee Shade', cursive;
 }
 
 #logo {
@@ -106,7 +106,6 @@ footer {
   font-size: 25px;
   font-family: 'Bungee Inline', cursive;
   color: #000000;
-  /*color: #dd5c11;*/
   text-align: center;
   display: inline;
   margin: 0px 30px;
@@ -132,8 +131,7 @@ footer {
   padding: 10px;
 }
 
-
-/*alternate fonts */
+/*ALTERNATE FONTS */
 /*font-family: 'Bungee Inline', cursive;
 font-family: 'Bungee Outline', cursive;
 font-family: 'Bungee Shade', cursive;
