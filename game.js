@@ -131,7 +131,7 @@ var gameOver = function() {
   }
   if (level === 3) {
     clearInterval(play3);
-  } 
+  }
 };
 
 //PLAYER START POSITION
@@ -140,7 +140,7 @@ var y = 230;
 
 //CREATES THE PLAYER
 var player = function() {
-    var ship = document.getElementById('ship'); 
+    var ship = document.getElementById('ship');
     ctx.drawImage(ship, x, y, 40, 40);
 };
 
@@ -162,14 +162,14 @@ var player = function() {
     //RIGHT
     if (event.keyCode === 39) {
       x = x + 15;
-    } 
+    }
   }
 };
 
 //STAIC TREASURES ON GAME BOARD
 var spaceTreasuresOne = [
   {thing: 'yellowCoin', img: 'coin', x: 600, y: 100, width: 20, height: 20, points: 100, oX: 600, oY: 100},
-  {thing: 'yellowCoin', img: 'coin', x: 200, y: 300, width: 20, height: 20, points: 100, oX: 200, oY: 300}, 
+  {thing: 'yellowCoin', img: 'coin', x: 200, y: 300, width: 20, height: 20, points: 100, oX: 200, oY: 300},
   {thing: 'yellowCoin', img: 'coin', x: 200, y: 100, width: 20, height: 20, points: 100, oX: 200, oY: 100},
   {thing: 'yellowCoin', img: 'coin', x: 650, y: 450, width: 20, height: 20, points: 100, oX: 650, oY: 450},
   {thing: 'arrow', img: 'arrow', x: 780, y: 245, width: 20, height: 20, points: 500, oX: 780, oY: 245},
@@ -232,7 +232,7 @@ var staticThree = [
 
 //MOVING OBSTACLES ON GAME BOARD
 var movingOne = [
-  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy: .12, width: 30, height: 30, oX: 790, oY: Math.random() * 500}, 
+  {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy: .12, width: 30, height: 30, oX: 790, oY: Math.random() * 500},
   {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx: -.25, dy:   0, width: 20, height: 20, oX: 790, oY: Math.random() * 500},
   {thing: 'asteroid3', img: 'rock3', x: 790, y: Math.random() * 500, dx:   -1, dy: .12, width: 35, height: 35, oX: 790, oY: Math.random() * 500},
   {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx:  -.5, dy:   0, width: 20, height: 20, oX: 790, oY: Math.random() * 500},
@@ -242,7 +242,7 @@ var movingOne = [
   {thing: 'asteroid4', img: 'rock4', x: 790, y: Math.random() * 500, dx:  -.5, dy:  -0, width: 40, height: 40, oX: 790, oY: Math.random() * 500},
   {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx:   -1, dy:-.07, width: 15, height: 15, oX: 790, oY: Math.random() * 500},
   {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 30, height: 30, oX: 790, oY: Math.random() * 500},
-]; 
+];
 
 var movingTwo = [
   {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx: -.35, dy: .12, width: 30, height: 30, oX: 790, oY: Math.random() * 500},
@@ -261,7 +261,7 @@ var movingTwo = [
   {thing: 'asteroid2', img: 'rock2', x: 790, y: Math.random() * 500, dx:  -.5, dy:-.25, width: 30, height: 30, oX: 790, oY: Math.random() * 500},
   {thing: 'alien1', img:'alien1', x: 790, y: 150, dx: -1, dy:   0, width: 30, height: 30, oX: 790, oY: 150},
   {thing: 'alien2', img:'alien2', x: 790, y: 350, dx:-.5, dy:-.15, width: 40, height: 40, oX: 790, oY: 350},
-]; 
+];
 
 var movingThree = [
   {thing: 'asteroid1', img: 'rock1', x: 790, y: Math.random() * 500, dx:   -1, dy:   0, width: 30, height: 30, oX: 790, oY: Math.random() * 500},
@@ -293,7 +293,7 @@ var movingThree = [
   {thing: 'alien1', img:'alien1', x: 790, y: 150, dx: -1, dy:   0, width: 30, height: 30, oX: 790, oY: 150},
   {thing: 'alien2', img:'alien2', x: 790, y: 350, dx:-.5, dy:-.15, width: 20, height: 20, oX: 790, oY: 350},
   {thing: 'alien1', img:'alien1', x: 790, y: 250, dx: -2, dy: -.5, width: 30, height: 30, oX: 790, oY: 250},
-]; 
+];
 
 //CREATES STATIC TREASURES
 var staticTreasures = function(staticTreasure) {
@@ -319,7 +319,7 @@ var movingObstacles = function(movingLevel) {
       ctx.drawImage(asteroid, movingLevel[i].x, movingLevel[i].y, movingLevel[i].width, movingLevel[i].height);
       movingLevel[i].x += movingLevel[i].dx;
       movingLevel[i].y += movingLevel[i].dy;
-    } 
+    }
   }
 };
 
@@ -393,7 +393,7 @@ var checkForWin = function() {
       popUp.style.display = "initial";
       displayOne.textContent = "PRESS RESET TO BEGIN A NEW GAME";
       ctx.clearRect(0, 0, canvas.Width, canvas.Height);
-    } 
+    }
     level += 1;
     setTimeout(function(){
       popUp.style.display = "none";
@@ -450,6 +450,6 @@ if (level === 1) {
     treasureCollision(spaceTreasuresThree);
     checkForCollision(staticThree);
     checkForCollision(movingThree);
-  };    
+  };
 };
 //END
