@@ -415,9 +415,12 @@ var gameLoop = function() {
   //CREATES THE MOVING STARS EFFECT
   var starsX = Math.random() * canvas.Width;
   var starsY = Math.random() * canvas.Height;
+  var starsXx = Math.random() * canvas.Width;
+  var starsYy = Math.random() * canvas.Height;
   ctx.fillStyle = 'White';
-  ctx.fillRect(starsX, starsY, 3.5, 3.5);
-  ctx.fillRect(starsX, starsY, 2, 2);
+  ctx.fillRect(starsX, starsY, 3, 3);
+  ctx.fillRect(starsXx, starsYy, 3, 3);
+
   //DRAWS OBSTACLES IN THIS ORDER FOR LAYERS OF CANVAS
   if (level === 1) {
     staticObstacles(staticOne);

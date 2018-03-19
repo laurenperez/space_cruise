@@ -7,7 +7,8 @@ body {
 header {
   height: 100px;
   text-align: center;
-  background: #dd5c11;
+  /* background: #dd5c11; */
+  background: #FF7C00;
 }
 
 h1 {
@@ -91,12 +92,14 @@ canvas {
 #buttonContainer {
   height: 100px;
   text-align: center;
-  background: #dd5c11;
+  /* background: #dd5c11; */
+  background: #FF7C00;
 }
 
 footer {
   height: 50px;
-  background: #dd5c11;
+  /* background: #dd5c11; */
+  background: #FF7C00;
   text-align: center;
 }
 
