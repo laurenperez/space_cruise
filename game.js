@@ -101,14 +101,17 @@ var startGame = function() {
   if (!play1 && level === 1) {
     levelDisplay.textContent = "LEVEL " + level;
     goalDisplay.textContent = "COLLECT THE COINS";
+    displayTwo.textContent = "USE ARROW KEYS TO MOVE CRUISER";
     play1 = window.setInterval(gameLoop, levelOneSpeed);
   } else if (!play2 && level === 2) {
     levelDisplay.textContent = "LEVEL " + level;
     goalDisplay.textContent = "COLLECT THE COINS";
+    displayTwo.textContent = "USE ARROW KEYS TO MOVE CRUISER";
     play2 = window.setInterval(gameLoop, levelTwoSpeed);
   } else if (!play3 && level === 3) {
     levelDisplay.textContent = "LEVEL " + level;
     goalDisplay.textContent = "SAVE THE ASTRONAUT";
+    displayTwo.textContent = "USE ARROW KEYS TO MOVE CRUISER";
     play3 = window.setInterval(gameLoop, levelThreeSpeed);
   }
 };
